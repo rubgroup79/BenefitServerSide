@@ -163,7 +163,23 @@ namespace Benefit.Controllers
         {
             return DateTime.Now.ToString().Replace('/', '_').Replace(':', '-').Replace(' ', '_');
         }
+
+        [HttpGet]
+
+        [Route("api/ShowProfile")]
+
+        public User ShowProfile(int UserCode)
+
+        {
+
+            BenefitSystem s = new BenefitSystem();
+
+            return s.ShowProfile(UserCode);
+
+        }
     }
+
+   
 
 }
 

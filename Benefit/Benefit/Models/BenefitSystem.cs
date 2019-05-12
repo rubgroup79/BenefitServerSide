@@ -58,5 +58,17 @@ namespace Benefit.Models
         //    DBservices dbs = new DBservices();
         //    return dbs.SearchPartners(o);
         //}
+
+        public User ShowProfile(int UserCode)
+
+        {
+
+            DBservices dbs = new DBservices();
+
+            return dbs.ShowProfile(UserCode);
+
+        }
+
+
     }
 }

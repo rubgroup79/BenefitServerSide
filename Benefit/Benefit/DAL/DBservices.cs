@@ -1706,6 +1706,102 @@ public class DBservices
 
     }
 
+    public User ShowProfile(int UserCode)
+
+    {
+
+        SqlConnection con = null;
+
+
+
+        try
+
+        {
+
+            con = connect("BenefitConnectionStringName");
+
+
+
+            String selectSTR = "select U.UserCode, U.FirstName, U.LastName, U.Gender, datediff(year, U.DateOfBirth, getdate()) as Age, U.Picture" +
+
+                  " from Users as U" +
+
+                  " where U.UserCode = " + UserCode;
+
+
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+
+
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+
+
+            User u = new Trainee();
+
+
+
+            if (dr.Read())
+
+            {
+
+                u.UserCode = Convert.ToInt32(dr["UserCode"]);
+
+                u.FirstName = Convert.ToString(dr["FirstName"]);
+
+                u.LastName = Convert.ToString(dr["LastName"]);
+
+                u.Gender = Convert.ToString(dr["Gender"]);
+
+                u.Picture = Convert.ToString(dr["Picture"]);
+
+
+
+                return u;
+
+            }
+
+            else
+
+            {
+
+                u.UserCode = 0;
+
+                return u;
+
+            }
+
+        }
+
+
+
+        catch (Exception ex)
+
+        {
+
+            throw (ex);
+
+        }
+
+
+
+        finally
+
+        {
+
+            if (con != null)
+
+            {
+
+                con.Close();
+
+            }
+
+        }
+
+    }
+
     //--------------------------------------------------------------------
     // Build the Insert command String
     //--------------------------------------------------------------------
