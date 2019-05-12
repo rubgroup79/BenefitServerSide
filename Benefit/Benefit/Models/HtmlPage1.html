@@ -1,0 +1,253 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <!--<link href="../Style.css" rel="stylesheet" />-->
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+
+
+    <script>
+
+
+
+        $(document).ready(function () {
+
+
+
+
+            //--------------------------------------------------------------------
+            // ADD TRAINEE
+            //--------------------------------------------------------------------
+            //Trainee = {
+            //    Email: "meidan@gmail.com",
+            //    FirstName: "meidan",
+            //    LastName: "weiss",
+            //    Password: "12345",
+            //    Gender: "Male",
+            //    DateOfBirth: "1991-09-27",
+            //    Picture: "fdfd",
+            //    SearchRadius: 20,
+            //    IsTrainer: 0,
+            //    SportCategories: [2,3],
+            //    MinBudget: 100,
+            //    MaxBudget: 350,
+            //    PartnerGender: "Female",
+            //    TrainerGender: "Male",
+            //    MinPartnerAge: 23,
+            //    MaxPartnerAge:28
+
+            //}
+            //obj = JSON.stringify(Trainee);
+            //console.log(obj);
+            //ajaxCall("POST", "../api/InsertTrainee", obj, success1, error);
+
+            //str = {
+            //    UserEmail: "stav@gmail.com"
+            //}
+            //ajaxCall("GET", "../api/CheckIfEmailExists", str, success1, error);
+
+            //--------------------------------------------------------------------
+            // ADD TRAINER
+            //--------------------------------------------------------------------
+            //Trainer = {
+            //    Email: "noam@gmail.com",
+            //    FirstName: "noam",
+            //    LastName: "sharon",
+            //    Password: "12345",
+            //    Gender: "Male",
+            //    DateOfBirth: "1992-10-16",
+            //    Picture: "11111",
+            //    SearchRadius: 8,
+            //    IsTrainer: 1,
+            //    SportCategories: [1, 2],
+            //    PersonalTrainingPrice: 200,
+            //    GroupTrainingPrice: 80
+            //}
+            //obj = JSON.stringify(Trainer);
+            //console.log(obj);
+            //ajaxCall("POST", "../api/InsertTrainer", obj, success1, error);
+
+            //--------------------------------------------------------------------
+            // ADD ONLINE TRAINEE
+            //--------------------------------------------------------------------
+
+            //onlinehistorytrainee = {
+            //    UserCode: 28,
+            //    Latitude: 32.3051727,
+            //    Longitude: 35.006397,
+            //    StartTime: "2019-04-11 15:27:00.123",
+            //    EndTime: "2019-04-11 23:00:00.123",
+            //    WithTrainer: 1,
+            //    WithPartner: 1,
+            //    GroupWithTrainer: 1,
+            //    GroupWithPartners: 1
+            //}
+
+            //obj = JSON.stringify(onlinehistorytrainee);
+            //console.log(obj);
+            //ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
+            //ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
+
+            //delete from db
+            // ajaxcall("GET", "../api/DeleteNotActive", obj, success1, error);
+
+            //--------------------------------------------------------------------
+            // ADD ONLINE TRAINER
+            //--------------------------------------------------------------------
+
+            //    OnlineHistoryTrainer = {
+            //        UserCode: 4,
+            //        Latitude: "32.328673",
+            //        Longitude: "34.906768",
+            //        StartTime: "2019-03-16 09:00:29.123",
+            //        EndTime: "2019-03-16 09:30:29.123"
+            //    }
+
+            //    obj = JSON.stringify(OnlineHistoryTrainer);
+            //    console.log(obj);
+            //    ajaxCall("POST", "../api/InsertOnlineTrainer", obj, successInsertOnline, error);
+
+
+            //--------------------------------------------------------------------
+            // ADD Group
+            //--------------------------------------------------------------------
+
+            //HistoryGroupTraining = {
+            //    TrainingTime: "2019-04-03 16:00:00.123",
+            //    Latitude: "32.360869",
+            //    Longitude: "34.862154",
+            //    WithTrainer: 1,
+            //    CreatorCode: 4,
+            //    MinParticipants: 2,
+            //    MaxParticipants: 8,
+            //    StatusCode: 1,
+            //    SportCategoryCode: 1,
+            //    Price: 150
+            //}
+
+            //obj = JSON.stringify(HistoryGroupTraining);
+            //console.log(obj);
+            //ajaxCall("POST", "../api/InsertGroupTraining", obj, successInsertOnline, error);
+
+
+            //details = {
+            //    UserCode: 1,
+            //    GroupTrainingCode:1
+            //}
+
+            //obj = JSON.stringify(details);
+            //ajaxCall("POST", "../api/JoinGroup?UserCode=4&GroupTrainingCode=6", "", success1, error);
+
+            //--------------------------------------------------------------------
+            // check function GET LAZY TRAINEES
+            //--------------------------------------------------------------------
+            // ajaxCall("GET", "../api/GetPrefferedDay", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/getLazyTrainees", "", successGetLazy, error);
+            // ajaxCall("GET", "../api/getLazyTrainers", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/start", "", successGetLazy, error);
+
+            //Suggestion = {
+            //	SenderCode: 28,
+            //	ReciverCode: 29
+            //}
+            //obj = JSON.stringify(Suggestion);
+            //ajaxCall("GET", "../api/SendSuggestion?SenderCode=28&ReceiverCode=29", "", successSendSuggestion, error);
+            //ajaxCall("POST", "../api/ReplySuggestion?SuggestionCode=1&reply="+"true", "", successSendSuggestion, error);
+            //ajaxCall("GET", "../api/GetPendingSuggestions?UserCode=28&Sender=true", "", successSendSuggestion, error);
+            //ajaxCall("GET", "../api/GetSuggestionDetails?SuggestionCode=1", "", successSendSuggestion, error);
+            //ajaxCall("POST", "../api/CancelSuggestion?SuggestionCode=29", "", successSendSuggestion, error);
+			//ajaxCall("GET", "../api/GetSuggestions?UserCode=2&IsApproved=false", "", successSendSuggestion, error);
+            //ajaxCall("GET", "../api/GetFutureCoupleTrainings?UserCode=1", "", successSendSuggestion, error);
+            //ajaxCall("POST", "../api/CancelCoupleTraining?CoupleTrainingCode=25&UserCode=1", "", successSendSuggestion, error);
+                 var pnd = {
+                     to: "ExponentPushToken[dADTjNJK3uxJLtuS24EOZN]",
+                    title: 'Long Time No See',
+                    body: 'Hi weve missed you! ',
+                    badge: 1
+                }
+            ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
+            //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
+            //ajaxCall("GET", "../api/CheckActiveSuggestions?SenderCode=1&ReceiverCode=2", "", successSendSuggestion, error);
+        });
+
+
+        // send push notifications to lazy trainees/trainers
+        function successGetLazy(data) {
+            console.log(data);
+            //for (var i = 0; i < data.length; i++) {
+            //    var pnd = {
+            //        to: data[i].Token,
+            //        title: 'Long Time No See',
+            //        body: 'Hi ' + data[i].FirstName + ", we've missed you! ",
+            //        badge: 1
+            //    }
+            //    ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), success1, error);
+            //}
+        }
+
+        // send push notifications to lazy trainees/trainers
+        function successSendSuggestion(data) {
+            console.log(data);
+
+            //var pnd = {
+            //	to: data,
+            //	title: 'You have a new suggestion!',
+            //	body: '///// ',
+            //	badge: 1
+            //}
+
+            //    ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), success1, error);
+
+        }
+
+        function successInsertOnline(data) {
+            console.log(data);
+        }
+
+        function successInsertOnline1(data) {
+            console.log(data);
+        }
+
+        function success1(data) {
+            alert(data);
+        }
+
+        function success(data) {
+            console.log(data);
+            if (data) {
+                trainee = {
+                    Email: "stav@gmail.com",
+                    Password: "12345"
+                }
+                ajaxCall("POST", "../api/CheckIfPasswordMatches", JSON.stringify(trainee), successPassword, error);
+            }
+
+            else {
+                alert("user not exists");
+            }
+        }
+
+        function successPassword(data) {
+            if (data != 0)
+                alert(data);
+            else alert("incorrect password")
+
+        }
+
+        function error(err) {
+            console.log(err);
+        }
+
+
+    </script>
+</head>
+<body>
+</body>
+</html>
