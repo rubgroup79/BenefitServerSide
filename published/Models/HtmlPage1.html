@@ -78,21 +78,21 @@
             // ADD ONLINE TRAINEE
             //--------------------------------------------------------------------
 
-            //onlinehistorytrainee = {
-            //    UserCode: 28,
-            //    Latitude: 32.3051727,
-            //    Longitude: 35.006397,
-            //    StartTime: "2019-04-11 15:27:00.123",
-            //    EndTime: "2019-04-11 23:00:00.123",
-            //    WithTrainer: 1,
-            //    WithPartner: 1,
-            //    GroupWithTrainer: 1,
-            //    GroupWithPartners: 1
-            //}
+            onlinehistorytrainee = {
+                UserCode: 1,
+                Latitude: 32.35989,
+                Longitude: 34.86053,
+                StartTime: "2019-05-12 16:00:00.123",
+                EndTime: "2019-05-12 23:00:00.123",
+                WithTrainer: 1,
+                WithPartner: 0,
+                GroupWithTrainer: 0,
+                GroupWithPartners: 0
+            }
 
-            //obj = JSON.stringify(onlinehistorytrainee);
-            //console.log(obj);
-            //ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
+            obj = JSON.stringify(onlinehistorytrainee);
+            console.log(obj);
+            ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
             //ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
 
             //delete from db
@@ -166,6 +166,13 @@
 			//ajaxCall("GET", "../api/GetSuggestions?UserCode=2&IsApproved=false", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureCoupleTrainings?UserCode=1", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelCoupleTraining?CoupleTrainingCode=25&UserCode=1", "", successSendSuggestion, error);
+            //     var pnd = {
+            //         to: "ExponentPushToken[dADTjNJK3uxJLtuS24EOZN]",
+            //        title: 'Long Time No See',
+            //        body: 'Hi weve missed you! ',
+            //        badge: 1
+            //    }
+            //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/CheckActiveSuggestions?SenderCode=1&ReceiverCode=2", "", successSendSuggestion, error);
         });

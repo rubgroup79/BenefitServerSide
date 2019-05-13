@@ -395,7 +395,7 @@ public class DBservices
             string trainerGenderStr = null;
             if (search_TrainerGender == "Both")
                 trainerGenderStr = " ";
-            else trainerGenderStr = " (U.gender = '" + search_TrainerGender + " and ') ";
+            else trainerGenderStr = " (U.gender = '" + search_TrainerGender + "') and ";
 
             string sportCategoriesStr = "and (USC.CategoryCode = " + scl[0];
             for (int i = 1; i < scl.Count; i++)
