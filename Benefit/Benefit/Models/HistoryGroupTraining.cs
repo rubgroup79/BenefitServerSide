@@ -22,8 +22,7 @@ namespace Benefit.Models
             CreatorCode = _creatorCode;
             MinParticipants = _minParticipants;
             MaxParticipants = _maxParticipants;
-            if (_withTrainer == 0) CurrentParticipants = 1;
-            else CurrentParticipants = 0;
+            CurrentParticipants = _currentParticipants;
             SportCategory = _sportCategory;
             Price = _price;
 
@@ -47,7 +46,12 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             return dbs.GetFutureGroupTrainings(UserCode);
         }
-
+        
+        public void CancelGroupParticipant(int GroupTrainingCode, int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            dbs.CancelGroupParticipant(GroupTrainingCode,UserCode);
+        }
 
 
 

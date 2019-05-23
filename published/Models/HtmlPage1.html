@@ -36,7 +36,6 @@
             //    SearchRadius: 20,
             //    IsTrainer: 0,
             //    SportCategories: [2,3],
-            //    MinBudget: 100,
             //    MaxBudget: 350,
             //    PartnerGender: "Female",
             //    TrainerGender: "Male",
@@ -82,18 +81,19 @@
                 UserCode: 1,
                 Latitude: 32.35989,
                 Longitude: 34.86053,
-                StartTime: "2019-05-12 16:00:00.123",
-                EndTime: "2019-05-12 23:00:00.123",
-                WithTrainer: 1,
+                StartTime: "2019-05-18 12:00:00.123",
+                EndTime: "2019-05-18 23:00:00.123",
+                WithTrainer: 0,
                 WithPartner: 0,
                 GroupWithTrainer: 0,
-                GroupWithPartners: 0
+                GroupWithPartners: 1
             }
 
             obj = JSON.stringify(onlinehistorytrainee);
             console.log(obj);
             ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
-            //ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
+            ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
+            ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
 
             //delete from db
             // ajaxcall("GET", "../api/DeleteNotActive", obj, success1, error);
@@ -119,21 +119,20 @@
             // ADD Group
             //--------------------------------------------------------------------
 
-            //HistoryGroupTraining = {
-            //    TrainingTime: "2019-04-03 16:00:00.123",
-            //    Latitude: "32.360869",
-            //    Longitude: "34.862154",
-            //    WithTrainer: 1,
-            //    CreatorCode: 4,
-            //    MinParticipants: 2,
-            //    MaxParticipants: 8,
-            //    StatusCode: 1,
-            //    SportCategoryCode: 1,
-            //    Price: 150
-            //}
+            HistoryGroupTraining = {
+                TrainingTime: "2019-04-03 16:00:00.123",
+                Latitude: "32.360869",
+                Longitude: "34.862154",
+                WithTrainer: 1,
+                CreatorCode: 4,
+                MinParticipants: 2,
+                MaxParticipants: 8,
+                SportCategoryCode: 1,
+                Price: 150
+            }
 
-            //obj = JSON.stringify(HistoryGroupTraining);
-            //console.log(obj);
+            obj = JSON.stringify(HistoryGroupTraining);
+            console.log(obj);
             //ajaxCall("POST", "../api/InsertGroupTraining", obj, successInsertOnline, error);
 
 
@@ -161,11 +160,13 @@
             //ajaxCall("GET", "../api/SendSuggestion?SenderCode=28&ReceiverCode=29", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/ReplySuggestion?SuggestionCode=1&reply="+"true", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetPendingSuggestions?UserCode=28&Sender=true", "", successSendSuggestion, error);
-            //ajaxCall("GET", "../api/GetSuggestionDetails?SuggestionCode=1", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelSuggestion?SuggestionCode=29", "", successSendSuggestion, error);
-			//ajaxCall("GET", "../api/GetSuggestions?UserCode=2&IsApproved=false", "", successSendSuggestion, error);
+			//ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureCoupleTrainings?UserCode=1", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelCoupleTraining?CoupleTrainingCode=25&UserCode=1", "", successSendSuggestion, error);
+            //ajaxCall("GET", "../api/CheckIfUserOnline?UserCode=1&IsTrainer=0", "", success1, error);
+            //ajaxCall("POST", "../api/GoOffline?UserCode=1&IsTrainer=0", "", success1, error);
+            //ajaxCall("POST", "../api/CancelGroupParticipant?GroupTrainingCode=35&UserCode=1", "", success1, error); 
             //     var pnd = {
             //         to: "ExponentPushToken[dADTjNJK3uxJLtuS24EOZN]",
             //        title: 'Long Time No See',

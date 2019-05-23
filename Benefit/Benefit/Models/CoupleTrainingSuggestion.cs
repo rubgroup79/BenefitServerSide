@@ -44,14 +44,6 @@ namespace Benefit.Models
            return dbs.GetSuggestions(UserCode,  IsApproved);
         }
 
-        public List<Result> GetSuggestionDetails(int SuggestionCode)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.GetSuggestionDetails(SuggestionCode);
-        }
-
-
-
         public string CheckActiveSuggestions(int SenderCode,int ReceiverCode)
         {
             DBservices dbs = new DBservices();

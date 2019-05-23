@@ -19,9 +19,17 @@ namespace Benefit.Controllers
 
         [HttpPost]
         [Route("api/InsertOnlineTrainee")]
-        public IEnumerable<Result> InsertOnlineTrainee([FromBody]OnlineHistoryTrainee o)
+        public void InsertOnlineTrainee([FromBody]OnlineHistoryTrainee o)
         {
-           return o.InsertOnlineTrainee(o);
+           o.InsertOnlineTrainee(o);
+        }
+
+
+        [HttpPost]
+        [Route("api/SearchCoupleTraining")]
+        public IEnumerable<Result> SearchCoupleTraining([FromBody]OnlineHistoryTrainee o)
+        {
+            return o.SearchCoupleTraining(o);
         }
 
 
@@ -31,10 +39,6 @@ namespace Benefit.Controllers
         {
             return o.SearchGroups(o);
         }
-
-       
-
-
-
+        
     }
 }

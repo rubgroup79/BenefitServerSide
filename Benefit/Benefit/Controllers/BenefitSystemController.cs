@@ -165,17 +165,27 @@ namespace Benefit.Controllers
         }
 
         [HttpGet]
-
         [Route("api/ShowProfile")]
-
         public User ShowProfile(int UserCode)
-
         {
-
             BenefitSystem s = new BenefitSystem();
-
             return s.ShowProfile(UserCode);
+        }
 
+        [HttpPost]
+        [Route("api/GoOffline")]
+        public void GoOffline(int UserCode, int IsTrainer)
+        {
+            BenefitSystem s = new BenefitSystem();
+            s.GoOffline(UserCode, IsTrainer);
+        }
+
+        [HttpGet]
+        [Route("api/CheckIfUserOnline")]
+        public bool CheckIfUserOnline(int UserCode, int IsTrainer)
+        {
+            BenefitSystem s = new BenefitSystem();
+            return s.CheckIfUserOnline(UserCode, IsTrainer);
         }
     }
 

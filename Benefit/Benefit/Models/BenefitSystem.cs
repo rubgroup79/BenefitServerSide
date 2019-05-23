@@ -60,14 +60,22 @@ namespace Benefit.Models
         //}
 
         public User ShowProfile(int UserCode)
-
         {
-
             DBservices dbs = new DBservices();
-
             return dbs.ShowProfile(UserCode);
-
         }
+
+        public void GoOffline(int UserCode, int IsTrainer)
+        {
+            DBservices dbs = new DBservices();
+            dbs.GoOffline(UserCode, IsTrainer);
+        }
+        public bool CheckIfUserOnline(int UserCode, int IsTrainer)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.CheckIfUserOnline(UserCode, IsTrainer);
+        }
+        
 
 
     }

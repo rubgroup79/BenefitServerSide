@@ -21,11 +21,18 @@ namespace Benefit.Models
             GroupWithPartners = _groupWithPartners;
         }
 
-        public List<Result> InsertOnlineTrainee(OnlineHistoryTrainee o)
+        public void InsertOnlineTrainee(OnlineHistoryTrainee o)
         {
            DBservices dbs = new DBservices();
-            return dbs.InsertOnlineTrainee(o);
+           dbs.InsertOnlineTrainee(o);
         }
+
+        public List<Result> SearchCoupleTraining(OnlineHistoryTrainee o)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.SearchCoupleTraining(o);
+        }
+
 
         public List<HistoryGroupTraining> SearchGroups(OnlineHistoryTrainee o)
         {
