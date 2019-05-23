@@ -28,7 +28,7 @@ namespace Benefit.Controllers
             BenefitSystem s = new BenefitSystem();
             return s.CheckIfEmailExists(Email);
         }
-        
+
 
         [HttpPost]
         [Route("api/CheckIfPasswordMatches")]
@@ -43,10 +43,10 @@ namespace Benefit.Controllers
         public IEnumerable<Trainee> GetLazyTrainees()
         {
             BenefitSystem s = new BenefitSystem();
-            List<Trainee> tl= s.GetLazyTrainees();
+            List<Trainee> tl = s.GetLazyTrainees();
             return tl;
-            
-         
+
+
         }
 
         [HttpGet]
@@ -154,7 +154,7 @@ namespace Benefit.Controllers
                         }
                     }
 
-                    return Request.CreateResponse(HttpStatusCode.Created,savedFilePath[0]);
+                    return Request.CreateResponse(HttpStatusCode.Created, savedFilePath[0]);
                 });
             return task;
         }
@@ -187,9 +187,25 @@ namespace Benefit.Controllers
             BenefitSystem s = new BenefitSystem();
             return s.CheckIfUserOnline(UserCode, IsTrainer);
         }
+
+        [HttpGet]
+        [Route("api/GetAllChats")]
+        public IEnumerable<Chat> GetAllChats(int UserCode)
+        {
+            Chat c = new Chat();
+            return c.GetAllChats(UserCode);
+        }
+
+        [HttpGet]
+        [Route("api/GetMessages")]
+        public IEnumerable<Message> GetMessages(int ChatCode)
+        {
+            Chat c = new Chat();
+            return c.GetMessages(ChatCode);
+        }
     }
 
-   
+
 
 }
 

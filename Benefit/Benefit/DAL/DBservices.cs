@@ -2057,6 +2057,106 @@ public class DBservices
             }
         
     }
+
+
+    public List<Chat> GetAllChats(int UserCode)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select C.ChatCode, U.UserCode as PartnerCode ,U.FirstName, U.LastName,U.Picture, LM.Content " +
+                " from( " +
+                " select M.ChatCode, Res.LatestMessageDate, M.Content" +
+                " from(" +
+                " select  M.ChatCode, max(M.SendingTime) as LatestMessageDate" +
+                " from Messages M" +
+                " group by M.ChatCode) as Res inner join Messages M" +
+                " on Res.ChatCode = M.ChatCode and M.SendingTime = Res.LatestMessageDate) as LM" +
+                " inner join Chats C on C.ChatCode = LM.ChatCode" +
+                " inner join Users U on U.UserCode =case when C.UserCode1 = " + UserCode + " then C.UserCode2 when C.UserCode2 =" + UserCode + " then C.UserCode1 end";
+
+            cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<Chat> cl = new List<Chat>();
+            while (dr.Read())
+            {
+                Chat c = new Chat();
+                c.ChatCode = Convert.ToInt32(dr["ChatCode"]);
+                c.UserCode1 = UserCode;
+                c.UserCode2 = Convert.ToInt32(dr["PartnerCode"]);
+                c.FirstName = Convert.ToString(dr["FirstName"]);
+                c.LastName = Convert.ToString(dr["LastName"]);
+                c.Picture = Convert.ToString(dr["Picture"]);
+                c.LastMessage= Convert.ToString(dr["Content"]);
+                cl.Add(c);
+            }
+
+            return cl;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
+    public List<Message> GetMessages(int ChatCode)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select * from Messages M" +
+                " where M.ChatCode = "+ChatCode;
+
+            cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<Message> ml = new List<Message>();
+            while (dr.Read())
+            {
+                Message m = new Message();
+                m.MessageCode = Convert.ToInt32(dr["MessageCode"]);
+                m.ChatCode = Convert.ToInt32(dr["ChatCode"]);
+                m.SenderCode = Convert.ToInt32(dr["SenderCode"]);
+                m.SendingTime = Convert.ToString(dr["SendingTime"]);
+                m.Content = Convert.ToString(dr["Content"]);
+                ml.Add(m);
+            }
+
+            return ml;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
     //--------------------------------------------------------------------
     // Build the Insert command String
     //--------------------------------------------------------------------

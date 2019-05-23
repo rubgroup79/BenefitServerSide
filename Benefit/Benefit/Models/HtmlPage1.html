@@ -77,22 +77,22 @@
             // ADD ONLINE TRAINEE
             //--------------------------------------------------------------------
 
-            onlinehistorytrainee = {
-                UserCode: 1,
-                Latitude: 32.35989,
-                Longitude: 34.86053,
-                StartTime: "2019-05-19 12:00:00.123",
-                EndTime: "2019-05-19 23:00:00.123",
-                WithTrainer: 0,
-                WithPartner: 1,
-                GroupWithTrainer: 1,
-                GroupWithPartners: 1
-            }
+            //onlinehistorytrainee = {
+            //    UserCode: 1,
+            //    Latitude: 32.35989,
+            //    Longitude: 34.86053,
+            //    StartTime: "2019-05-19 12:00:00.123",
+            //    EndTime: "2019-05-19 23:00:00.123",
+            //    WithTrainer: 0,
+            //    WithPartner: 1,
+            //    GroupWithTrainer: 1,
+            //    GroupWithPartners: 1
+            //}
 
-            obj = JSON.stringify(onlinehistorytrainee);
-            console.log(obj);
-            ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
-            ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
+            //obj = JSON.stringify(onlinehistorytrainee);
+            //console.log(obj);
+           // ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
+           // ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
             //ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
 
             //delete from db
@@ -119,20 +119,20 @@
             // ADD Group
             //--------------------------------------------------------------------
 
-            HistoryGroupTraining = {
-                TrainingTime: "2019-04-03 16:00:00.123",
-                Latitude: "32.360869",
-                Longitude: "34.862154",
-                WithTrainer: 1,
-                CreatorCode: 4,
-                MinParticipants: 2,
-                MaxParticipants: 8,
-                SportCategoryCode: 1,
-                Price: 150
-            }
+            //HistoryGroupTraining = {
+            //    TrainingTime: "2019-04-03 16:00:00.123",
+            //    Latitude: "32.360869",
+            //    Longitude: "34.862154",
+            //    WithTrainer: 1,
+            //    CreatorCode: 4,
+            //    MinParticipants: 2,
+            //    MaxParticipants: 8,
+            //    SportCategoryCode: 1,
+            //    Price: 150
+            //}
 
-            obj = JSON.stringify(HistoryGroupTraining);
-            console.log(obj);
+            //obj = JSON.stringify(HistoryGroupTraining);
+            //console.log(obj);
             //ajaxCall("POST", "../api/InsertGroupTraining", obj, successInsertOnline, error);
 
 
@@ -175,6 +175,9 @@
             //    }
             //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
+            ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
+            ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
+
             //ajaxCall("GET", "../api/CheckActiveSuggestions?SenderCode=1&ReceiverCode=2", "", successSendSuggestion, error);
         });
 
