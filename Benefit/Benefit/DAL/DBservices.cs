@@ -2264,6 +2264,35 @@ public class DBservices
         }
 
     }
+
+    public void InsertCoupleTraining(CoupleTraining ct)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+   
+
+        con = connect("BenefitConnectionStringName");
+        try
+        {
+            String pStr = BuildInsertCoupleTrainingCommand(ct);
+            cmd = CreateCommand(pStr, con);
+            cmd.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
     //--------------------------------------------------------------------
     // Build the Insert command String
     //--------------------------------------------------------------------
@@ -2397,6 +2426,17 @@ public class DBservices
 
         sb.AppendFormat("Values({0},{1},{2}, {3})", SenderCode.ToString(), ReceiverCode.ToString(), "getdate()", 4);
         String prefix = "INSERT INTO CoupleTrainingSuggestions (SenderCode, ReceiverCode, SendingTime, StatusCode) ";
+        command = prefix + sb.ToString();
+        return command;
+    }
+
+    private String BuildInsertCoupleTrainingCommand(CoupleTraining ct)
+    {
+        String command;
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendFormat("Values('{0}',{1},{2},{3},'{4}',{5},{6})", ct.TrainingTime, ct.Latitude.ToString(), ct.Longitude.ToString(), ct.WithTrainer.ToString(),'1', ct.SuggestionCode.ToString(), ct.Price.ToString());
+        String prefix = "INSERT INTO CoupleTraining (TrainingTime, Latitude, Longitude, WithTrainer, StatusCode, SuggestionCode, Price ) ";
         command = prefix + sb.ToString();
         return command;
     }

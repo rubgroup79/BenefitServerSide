@@ -16,6 +16,17 @@ namespace Benefit.Controllers
         {
 
         }
+
+        
+              [HttpPost]
+        [Route("api/InsertCoupleTraining")]
+        public void InsertCoupleTraining([FromBody]CoupleTraining ct)
+        {
+            ct.InsertCoupleTraining(ct);
+        }
+
+
+
         [HttpGet]
         [Route("api/SendSuggestion")]
         public string SendSuggestion(int SenderCode, int ReceiverCode)
