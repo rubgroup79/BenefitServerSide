@@ -40,6 +40,13 @@ namespace Benefit.Controllers
             hgt.CancelGroupParticipant(GroupTrainingCode, UserCode);
         }
 
-
+        
+             [HttpGet]
+        [Route("api/GetPastGroupTrainings")]
+        public IEnumerable<HistoryGroupTraining> GetPastGroupTrainings(int UserCode)
+        {
+            HistoryGroupTraining hgt = new HistoryGroupTraining();
+            return hgt.GetPastGroupTrainings(UserCode);
+        }
     }
 }

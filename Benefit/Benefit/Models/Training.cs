@@ -13,14 +13,16 @@ namespace Benefit.Models
         public float Longitude { get; set; }
         public int WithTrainer { get; set; }
         public int StatusCode { get; set; }
+        public int Price { get; set; }
 
-        public Training(string _trainingTime, float _latitude, float _longitude, int _withTrainer, int _statusCode)
+        public Training(string _trainingTime, float _latitude, float _longitude, int _withTrainer, int _statusCode, int _price)
         {
             TrainingTime = _trainingTime;
             Latitude = _latitude;
             Longitude = _longitude;
             WithTrainer = _withTrainer;
             StatusCode = _statusCode;
+            Price = _price;
         }
 
         public Training()

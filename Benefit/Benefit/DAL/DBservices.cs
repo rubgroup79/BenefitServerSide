@@ -2157,6 +2157,113 @@ public class DBservices
 
     }
 
+
+    public List<CoupleTraining> GetPastCoupleTrainings(int UserCode)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select CT.CoupleTrainingCode, CT.Latitude, CT.Longitude, U.FirstName, U.LastName, U.Picture,U.UserCode as 'PartnerCode', CT.TrainingTime, CT.WithTrainer, CT.Price" +
+                " from CoupleTraining CT inner join CoupleTrainingSuggestions CTS " +
+                " on CTS.SuggestionCode = CT.SuggestionCode" +
+                " inner join Users U " +
+                " on U.UserCode = case when CTS.SenderCode = "+UserCode+ " then CTS.ReceiverCode when CTS.ReceiverCode =" + UserCode + " then CTS.SenderCode end" +
+                " where CT.StatusCode = 7 and(CTS.SenderCode = " + UserCode + " or CTS.ReceiverCode = " + UserCode + ")";
+
+            cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<CoupleTraining> ctl = new List<CoupleTraining>();
+            while (dr.Read())
+            {
+                CoupleTraining ct = new CoupleTraining();
+                ct.TrainingCode = Convert.ToInt32(dr["CoupleTrainingCode"]);
+                ct.TrainingTime = Convert.ToString(dr["TrainingTime"]);
+                ct.Latitude = Convert.ToSingle(dr["Latitude"]);
+                ct.Longitude = Convert.ToSingle(dr["Longitude"]);
+                ct.PartnerUserCode = Convert.ToInt32(dr["PartnerCode"]);
+                ct.PartnerFirstName = Convert.ToString(dr["FirstName"]);
+                ct.PartnerLastName = Convert.ToString(dr["LastName"]);
+                ct.PartnerPicture= Convert.ToString(dr["Picture"]);
+                ct.WithTrainer= Convert.ToInt32(dr["WithTrainer"]);
+                if (ct.WithTrainer == 1)
+                    ct.Price = Convert.ToInt32(dr["Price"]);
+                else ct.Price = 0;
+                ctl.Add(ct);
+            }
+
+            return ctl;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
+
+    public List<HistoryGroupTraining> GetPastGroupTrainings(int UserCode)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select HGT.GroupTrainingCode, HGT.Latitude, HGT.Longitude, HGT.Price, S.Description as 'SportCategory', HGT.TrainingTime, HGT.WithTrainer" +
+                " from HistoryGroupTraining HGT inner join GroupParticipants GP" +
+                " on HGT.GroupTrainingCode = GP.GroupTrainingCode" +
+                " inner join SportCategories S " +
+                " on S.CategoryCode = HGT.SportCategoryCode" +
+                " where GP.UserCode = "+UserCode+ " and HGT.StatusCode = 7";
+            cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<HistoryGroupTraining> hgtl = new List<HistoryGroupTraining>();
+            while (dr.Read())
+            {
+                HistoryGroupTraining hgt = new HistoryGroupTraining();
+                hgt.TrainingCode = Convert.ToInt32(dr["GroupTrainingCode"]);
+                hgt.TrainingTime = Convert.ToString(dr["TrainingTime"]);
+                hgt.Latitude = Convert.ToSingle(dr["Latitude"]);
+                hgt.Longitude = Convert.ToSingle(dr["Longitude"]);
+                hgt.SportCategory = Convert.ToString(dr["SportCategory"]);
+                hgt.WithTrainer = Convert.ToInt32(dr["WithTrainer"]);
+                if (hgt.WithTrainer == 1)
+                    hgt.Price = Convert.ToInt32(dr["Price"]);
+                else hgt.Price = 0;
+                hgtl.Add(hgt);
+            }
+
+            return hgtl;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
     //--------------------------------------------------------------------
     // Build the Insert command String
     //--------------------------------------------------------------------

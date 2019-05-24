@@ -13,18 +13,17 @@ namespace Benefit.Models
         public int CurrentParticipants { get; set; }
         public string SportCategory { get; set; }
         public int SportCategoryCode { get; set; }
-        public int Price { get; set; }
 
 
-        public HistoryGroupTraining(string _trainingTime, float _latitude, float _longitude, int _withTrainer, int _statusCode, int _creatorCode, int _minParticipants, int _maxParticipants, int _price, string _sportCategory,  int _currentParticipants=0)
-            :base(_trainingTime,  _latitude,  _longitude, _withTrainer, _statusCode)
+
+        public HistoryGroupTraining(string _trainingTime, float _latitude, float _longitude, int _withTrainer, int _statusCode, int _price, int _creatorCode, int _minParticipants, int _maxParticipants, string _sportCategory,  int _currentParticipants=0)
+            :base(_trainingTime,  _latitude,  _longitude, _withTrainer, _statusCode, _price)
         {
             CreatorCode = _creatorCode;
             MinParticipants = _minParticipants;
             MaxParticipants = _maxParticipants;
             CurrentParticipants = _currentParticipants;
             SportCategory = _sportCategory;
-            Price = _price;
 
 
 
@@ -52,8 +51,11 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             dbs.CancelGroupParticipant(GroupTrainingCode,UserCode);
         }
-
-
-
+        
+        public List <HistoryGroupTraining> GetPastGroupTrainings(int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetPastGroupTrainings(UserCode);
+        }
     }
 }

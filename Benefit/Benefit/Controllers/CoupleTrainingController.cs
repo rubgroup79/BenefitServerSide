@@ -57,7 +57,6 @@ namespace Benefit.Controllers
             s.CancelSuggestion(SuggestionCode);
         }
 
-        // move to another controller ?!! 
         [HttpGet]
         [Route("api/GetFutureCoupleTrainings")]
         public IEnumerable<CoupleTraining> GetFutureCoupleTrainings(int UserCode)
@@ -66,7 +65,6 @@ namespace Benefit.Controllers
             return c.GetFutureCoupleTrainings(UserCode);
         }
 
-        // move to another controller ?!! 
         [HttpPost]
         [Route("api/CancelCoupleTraining")]
         public int CancelCoupleTraining(int CoupleTrainingCode, int UserCode)
@@ -75,7 +73,13 @@ namespace Benefit.Controllers
             return c.CancelCoupleTraining(CoupleTrainingCode, UserCode);
         }
 
-
+        [HttpGet]
+        [Route("api/GetPastCoupleTrainings")]
+        public IEnumerable<CoupleTraining> GetPastCoupleTrainings(int UserCode)
+        {
+            CoupleTraining ct = new CoupleTraining();
+            return ct.GetPastCoupleTrainings(UserCode);
+        }
 
 
     }

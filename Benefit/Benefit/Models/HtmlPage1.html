@@ -175,8 +175,11 @@
             //    }
             //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
-            ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
-            ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
+          
+            ajaxCall("GET", "../api/GetPastCoupleTrainings?UserCode=1", "", successGetLazy, error);
+            ajaxCall("GET", "../api/GetPastGroupTrainings?UserCode=1", "", successGetLazy, error);
 
             //ajaxCall("GET", "../api/CheckActiveSuggestions?SenderCode=1&ReceiverCode=2", "", successSendSuggestion, error);
         });

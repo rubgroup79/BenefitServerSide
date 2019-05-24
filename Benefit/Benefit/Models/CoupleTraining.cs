@@ -14,19 +14,18 @@ namespace Benefit.Models
         public string PartnerLastName { get; set; }
         public int PartnerAge { get; set; }
         public string PartnerPicture { get; set; }
-        public int Price { get; set; }
+       
 
 
-        public CoupleTraining(string _trainingTime, float _latitude, float _longitude, int _withTrainer, int _statusCode
-            , int _partnerUserCode, string _partnerFirstName, string _partnerLastName, int _partnerAge, string _partnerPicture, int _price)
-            :base(_trainingTime,  _latitude,  _longitude, _withTrainer, _statusCode)
+        public CoupleTraining(string _trainingTime, float _latitude, float _longitude, int _withTrainer, int _statusCode, int _price
+            , int _partnerUserCode, string _partnerFirstName, string _partnerLastName, int _partnerAge, string _partnerPicture)
+            :base(_trainingTime,  _latitude,  _longitude, _withTrainer, _statusCode, _price)
         {
             PartnerUserCode = _partnerUserCode;
             PartnerFirstName = _partnerFirstName;
             PartnerLastName = _partnerLastName;
             PartnerAge = _partnerAge;
             PartnerPicture = _partnerPicture;
-            Price = _price;
     }
 
         public CoupleTraining() { }
@@ -42,6 +41,10 @@ namespace Benefit.Models
             return dbs.CancelCoupleTraining(CoupleTrainingCode, UserCode);
         }
         
-
+     public List<CoupleTraining> GetPastCoupleTrainings(int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetPastCoupleTrainings(UserCode);
+        }
     }
 }
