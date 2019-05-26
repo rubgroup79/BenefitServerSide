@@ -195,17 +195,16 @@
             //obj = JSON.stringify(CoupleTraining);
             //console.log(obj);
             //ajaxCall("POST", "../api/InsertCoupleTraining", obj, successInsertOnline, error);
-            //var Message = {
-            //    ChatCode: 1,
-            //    SenderCode: 2,
-            //    SendingTime: '2019-05-26 16:00:00.000',
-            //    Content: 'great:)'
+            var Message = {
+                ChatCode: 1,
+                SenderCode: 1,
+                Content: 'ccc:)'
 
-            //}
+            }
 
-            //obj = JSON.stringify(Message);
-            //console.log(obj);
-            //ajaxCall("POST", "../api/SendMessage", obj, successInsertOnline, error);
+            obj = JSON.stringify(Message);
+            console.log(obj);
+            ajaxCall("POST", "../api/SendMessage", obj, successInsertOnline, error);
 
         });
 

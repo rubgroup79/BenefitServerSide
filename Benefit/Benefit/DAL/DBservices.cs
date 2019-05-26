@@ -2519,7 +2519,7 @@ public class DBservices
         String command;
         StringBuilder sb = new StringBuilder();
 
-        sb.AppendFormat("Values({0},{1},'{2}','{3}')", m.ChatCode.ToString(), m.SenderCode.ToString(), m.SendingTime, m.Content);
+        sb.AppendFormat("Values({0},{1},{2},'{3}')", m.ChatCode.ToString(), m.SenderCode.ToString(), " getdate() ", m.Content);
         String prefix = "INSERT INTO Messages (ChatCode, SenderCode, SendingTime,Content ) ";
         command = prefix + sb.ToString();
         return command;

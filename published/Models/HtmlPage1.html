@@ -77,23 +77,23 @@
             // ADD ONLINE TRAINEE
             //--------------------------------------------------------------------
 
-            onlinehistorytrainee = {
-                UserCode: 1,
-                Latitude: 32.35989,
-                Longitude: 34.86053,
-                StartTime: "2019-05-18 12:00:00.123",
-                EndTime: "2019-05-18 23:00:00.123",
-                WithTrainer: 0,
-                WithPartner: 0,
-                GroupWithTrainer: 0,
-                GroupWithPartners: 1
-            }
+            //onlinehistorytrainee = {
+            //    UserCode: 1,
+            //    Latitude: 32.35989,
+            //    Longitude: 34.86053,
+            //    StartTime: "2019-05-19 12:00:00.123",
+            //    EndTime: "2019-05-19 23:00:00.123",
+            //    WithTrainer: 0,
+            //    WithPartner: 1,
+            //    GroupWithTrainer: 1,
+            //    GroupWithPartners: 1
+            //}
 
-            obj = JSON.stringify(onlinehistorytrainee);
-            console.log(obj);
-            ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
-            ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
-            ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
+            //obj = JSON.stringify(onlinehistorytrainee);
+            //console.log(obj);
+            // ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
+            // ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
+            //ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
 
             //delete from db
             // ajaxcall("GET", "../api/DeleteNotActive", obj, success1, error);
@@ -119,20 +119,20 @@
             // ADD Group
             //--------------------------------------------------------------------
 
-            HistoryGroupTraining = {
-                TrainingTime: "2019-04-03 16:00:00.123",
-                Latitude: "32.360869",
-                Longitude: "34.862154",
-                WithTrainer: 1,
-                CreatorCode: 4,
-                MinParticipants: 2,
-                MaxParticipants: 8,
-                SportCategoryCode: 1,
-                Price: 150
-            }
+            //HistoryGroupTraining = {
+            //    TrainingTime: "2019-04-03 16:00:00.123",
+            //    Latitude: "32.360869",
+            //    Longitude: "34.862154",
+            //    WithTrainer: 1,
+            //    CreatorCode: 4,
+            //    MinParticipants: 2,
+            //    MaxParticipants: 8,
+            //    SportCategoryCode: 1,
+            //    Price: 150
+            //}
 
-            obj = JSON.stringify(HistoryGroupTraining);
-            console.log(obj);
+            //obj = JSON.stringify(HistoryGroupTraining);
+            //console.log(obj);
             //ajaxCall("POST", "../api/InsertGroupTraining", obj, successInsertOnline, error);
 
 
@@ -161,12 +161,12 @@
             //ajaxCall("POST", "../api/ReplySuggestion?SuggestionCode=1&reply="+"true", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetPendingSuggestions?UserCode=28&Sender=true", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelSuggestion?SuggestionCode=29", "", successSendSuggestion, error);
-			//ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successSendSuggestion, error);
+            //ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureCoupleTrainings?UserCode=1", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelCoupleTraining?CoupleTrainingCode=25&UserCode=1", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/CheckIfUserOnline?UserCode=1&IsTrainer=0", "", success1, error);
             //ajaxCall("POST", "../api/GoOffline?UserCode=1&IsTrainer=0", "", success1, error);
-            //ajaxCall("POST", "../api/CancelGroupParticipant?GroupTrainingCode=35&UserCode=1", "", success1, error); 
+            //ajaxCall("POST", "../api/CancelGroupParticipant?GroupTrainingCode=35&UserCode=1", "", success1, error);
             //     var pnd = {
             //         to: "ExponentPushToken[dADTjNJK3uxJLtuS24EOZN]",
             //        title: 'Long Time No See',
@@ -175,7 +175,37 @@
             //    }
             //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
+            ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
+
+            //ajaxCall("GET", "../api/GetPastCoupleTrainings?UserCode=1", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/GetPastGroupTrainings?UserCode=1", "", successGetLazy, error);
+
             //ajaxCall("GET", "../api/CheckActiveSuggestions?SenderCode=1&ReceiverCode=2", "", successSendSuggestion, error);
+
+            //var CoupleTraining = {
+            //    TrainingTime: "2019-05-24 16:00:00.000",
+            //    Latitude: "32.360869",
+            //    Longitude: "34.862154",
+            //    WithTrainer: 1,
+            //    Price: 150,
+            //    SuggestionCode: 53
+            //}
+
+            //obj = JSON.stringify(CoupleTraining);
+            //console.log(obj);
+            //ajaxCall("POST", "../api/InsertCoupleTraining", obj, successInsertOnline, error);
+            var Message = {
+                ChatCode: 1,
+                SenderCode: 1,
+                Content: 'ccc:)'
+
+            }
+
+            obj = JSON.stringify(Message);
+            console.log(obj);
+            ajaxCall("POST", "../api/SendMessage", obj, successInsertOnline, error);
+
         });
 
 
