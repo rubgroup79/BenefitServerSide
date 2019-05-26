@@ -2365,6 +2365,47 @@ public class DBservices
         }
     }
 
+    public int GetSuggestionCode(int UserCode1, int UserCode2)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select CTS.SuggestionCode" +
+                " from CoupleTrainingSuggestions CTS" +
+                " where ((CTS.SenderCode = "+ UserCode1 + " and CTS.ReceiverCode = " + UserCode2 + ") OR(CTS.SenderCode = " + UserCode2 + " and CTS.ReceiverCode = " + UserCode1 + "))" +
+                "and(CTS.StatusCode = 5)";
+
+            cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            int SuggestionCode = 0;
+            while (dr.Read())
+            {
+
+                SuggestionCode = Convert.ToInt32(dr["SuggestionCode"]);
+               
+            }
+
+            return SuggestionCode;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
 
     //--------------------------------------------------------------------
     // Build the Insert command String
@@ -2490,8 +2531,7 @@ public class DBservices
         return command;
     }
 
-
-
+    
     private String BuildInsertSuggestionCommand(int SenderCode, int ReceiverCode)
     {
         String command;
