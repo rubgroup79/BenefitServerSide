@@ -2373,20 +2373,19 @@ public class DBservices
         {
             con = connect("BenefitConnectionStringName");
 
-            String selectSTR = "select CTS.SuggestionCode" +
-                " from CoupleTrainingSuggestions CTS" +
-                " where ((CTS.SenderCode = "+ UserCode1 + " and CTS.ReceiverCode = " + UserCode2 + ") OR(CTS.SenderCode = " + UserCode2 + " and CTS.ReceiverCode = " + UserCode1 + "))" +
-                "and(CTS.StatusCode = 5)";
+            String selectSTR = "select CTS.SuggestionCode, CT.CoupleTrainingCode" +
+                " from CoupleTrainingSuggestions CTS left outer join CoupleTraining CT on CT.SuggestionCode = CTS.SuggestionCode" +
+                " where((CTS.SenderCode = "+ UserCode1 + " and CTS.ReceiverCode =  " + UserCode2 + ") OR(CTS.SenderCode = " + UserCode2 + " and CTS.ReceiverCode =" + UserCode1 + "))" +
+                " and(CTS.StatusCode = 5)";
 
             cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             int SuggestionCode = 0;
             while (dr.Read())
-            {
-
-                SuggestionCode = Convert.ToInt32(dr["SuggestionCode"]);
-               
+            { string CoupleTrainingCode = Convert.ToString(dr["CoupleTrainingCode"]);
+                if (CoupleTrainingCode == null)
+                    SuggestionCode = Convert.ToInt32(dr["SuggestionCode"]);
             }
 
             return SuggestionCode;
