@@ -2384,7 +2384,7 @@ public class DBservices
             int SuggestionCode = 0;
             while (dr.Read())
             { string CoupleTrainingCode = Convert.ToString(dr["CoupleTrainingCode"]);
-                if (CoupleTrainingCode == null)
+                if (CoupleTrainingCode == "")
                     SuggestionCode = Convert.ToInt32(dr["SuggestionCode"]);
             }
 

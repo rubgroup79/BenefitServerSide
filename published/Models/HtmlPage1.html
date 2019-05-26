@@ -175,7 +175,9 @@
             //    }
             //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
-            ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
+          //  ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
+            ajaxCall("GET", "../api/GetSuggestionCode?UserCode1=1&UserCode2=2", "", successGetLazy, error);
+
             //ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
 
             //ajaxCall("GET", "../api/GetPastCoupleTrainings?UserCode=1", "", successGetLazy, error);
@@ -195,16 +197,16 @@
             //obj = JSON.stringify(CoupleTraining);
             //console.log(obj);
             //ajaxCall("POST", "../api/InsertCoupleTraining", obj, successInsertOnline, error);
-            var Message = {
-                ChatCode: 1,
-                SenderCode: 1,
-                Content: 'ccc:)'
+            //var Message = {
+            //    ChatCode: 1,
+            //    SenderCode: 1,
+            //    Content: 'ccc:)'
 
-            }
+            //}
 
-            obj = JSON.stringify(Message);
-            console.log(obj);
-            ajaxCall("POST", "../api/SendMessage", obj, successInsertOnline, error);
+            //obj = JSON.stringify(Message);
+            //console.log(obj);
+            //ajaxCall("POST", "../api/SendMessage", obj, successInsertOnline, error);
 
         });
 
