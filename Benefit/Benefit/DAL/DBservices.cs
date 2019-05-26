@@ -502,6 +502,7 @@ public class DBservices
 
     }
 
+// מחזיר רשימה של כל היוזרים שכבר יש להם פעילות - אימון או הצעה פעילים עם המשתשמש שחיפש
     public List<int> CheckActiveResults(int UserCode)
     {
         SqlConnection con = null;
@@ -910,7 +911,8 @@ public class DBservices
     }
 
     // הפונקציה רצה על טבלת האונליין ומוחקת את מי שזמן סיום הפעילות שלו חלף
-    private void DeleteNotActive()
+    // לעשות את זה בפרוסס
+    public void DeleteNotActive()
     {
 
         SqlConnection con = null;
@@ -1488,6 +1490,8 @@ public class DBservices
         }
     }
 
+    //קורה בכל פעם שמציגים הצעות
+    // add this to a process every X minutes 
     public void UpdateSuggestionsStatus(int UserCode)
     {
 
@@ -1530,7 +1534,9 @@ public class DBservices
         }
     }
 
-    // בודקת האם יש כבר הצעה מאושרת או ממתינה לאישור או אימון קיים עבור אותם 2 משתשמשים
+    // קורה בשליחת הצעה 
+    //  בודקת האם יש כבר הצעה מאושרת או ממתינה לאישור או אימון קיים עבור אותם 2 משתשמשים
+    // מחזירה סטרינג שמוצג למשתמש 
     public string CheckActiveSuggestions(int SenderCode, int ReceiverCode)
     {
         SqlConnection con = null;
@@ -2160,6 +2166,9 @@ public class DBservices
 
     public List<CoupleTraining> GetPastCoupleTrainings(int UserCode)
     {
+
+        //status code = 8 --> completed training 
+       // to get canceled trainings --> status code = 2 
         SqlConnection con = null;
         SqlCommand cmd;
         try
@@ -2171,7 +2180,7 @@ public class DBservices
                 " on CTS.SuggestionCode = CT.SuggestionCode" +
                 " inner join Users U " +
                 " on U.UserCode = case when CTS.SenderCode = "+UserCode+ " then CTS.ReceiverCode when CTS.ReceiverCode =" + UserCode + " then CTS.SenderCode end" +
-                " where CT.StatusCode = 7 and(CTS.SenderCode = " + UserCode + " or CTS.ReceiverCode = " + UserCode + ")";
+                " where CT.StatusCode = 8 and(CTS.SenderCode = " + UserCode + " or CTS.ReceiverCode = " + UserCode + ")";
 
             cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -2213,9 +2222,9 @@ public class DBservices
 
     }
 
-
     public List<HistoryGroupTraining> GetPastGroupTrainings(int UserCode)
     {
+        //statusCode=8 -> completed training
         SqlConnection con = null;
         SqlCommand cmd;
         try
@@ -2227,7 +2236,7 @@ public class DBservices
                 " on HGT.GroupTrainingCode = GP.GroupTrainingCode" +
                 " inner join SportCategories S " +
                 " on S.CategoryCode = HGT.SportCategoryCode" +
-                " where GP.UserCode = "+UserCode+ " and HGT.StatusCode = 7";
+                " where GP.UserCode = "+UserCode+ " and HGT.StatusCode = 8";
             cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
@@ -2292,6 +2301,42 @@ public class DBservices
         }
 
     }
+
+  // changes status code from 1 (active) or 3 (full group) to 8 (completed) for past time
+  // canceled trainings stay with status canceled (2) 
+    public void UpdateTrainingsStatus()
+    {
+
+        SqlConnection con = null;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "UPDATE CoupleTraining set StatusCode=8" +
+                " where datediff(hour, TrainingTime, getdate())> 0 and StatusCode = 1"+
+                "update HistoryGroupTraining set StatusCode=8" +
+                " where datediff(hour, TrainingTime, getdate())> 0 and((StatusCode = 1) OR(StatusCode = 3))";
+            
+            cmd = new SqlCommand(selectSTR, con);
+            cmd.ExecuteNonQuery();
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
 
     //--------------------------------------------------------------------
     // Build the Insert command String

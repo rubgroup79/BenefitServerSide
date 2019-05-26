@@ -75,8 +75,13 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             return dbs.CheckIfUserOnline(UserCode, IsTrainer);
         }
-        
 
+        public void UpdateTrainingsStatus()
+        {
+
+            DBservices dbs = new DBservices();
+            dbs.UpdateTrainingsStatus();
+        }
 
     }
 }

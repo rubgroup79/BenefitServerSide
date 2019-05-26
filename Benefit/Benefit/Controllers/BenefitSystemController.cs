@@ -203,6 +203,15 @@ namespace Benefit.Controllers
             Chat c = new Chat();
             return c.GetMessages(ChatCode);
         }
+        
+        [HttpPost]
+        [Route("api/UpdateTrainingsStatus")]
+        public void UpdateTrainingsStatus()
+        {
+            BenefitSystem b = new BenefitSystem();
+            b.UpdateTrainingsStatus();
+        }
+
     }
 
 

@@ -55,4 +55,6 @@ namespace Benefit.Models
            dbs.InsertCoupleTraining(this);
         }
     }
+    
+
 }
