@@ -2073,7 +2073,7 @@ public class DBservices
         {
             con = connect("BenefitConnectionStringName");
 
-            String selectSTR = "select C.ChatCode, U.UserCode as PartnerCode ,U.FirstName, U.LastName,U.Picture, LM.Content " +
+            String selectSTR = "select C.ChatCode, U.UserCode as PartnerCode ,U.FirstName, U.LastName,U.Picture, LM.Content, LM.LatestMessageDate" +
                 " from( " +
                 " select M.ChatCode, Res.LatestMessageDate, M.Content" +
                 " from(" +
@@ -2082,7 +2082,9 @@ public class DBservices
                 " group by M.ChatCode) as Res inner join Messages M" +
                 " on Res.ChatCode = M.ChatCode and M.SendingTime = Res.LatestMessageDate) as LM" +
                 " inner join Chats C on C.ChatCode = LM.ChatCode" +
-                " inner join Users U on U.UserCode =case when C.UserCode1 = " + UserCode + " then C.UserCode2 when C.UserCode2 =" + UserCode + " then C.UserCode1 end";
+                " inner join Users U on U.UserCode =case when C.UserCode1 = " + UserCode + " then C.UserCode2 when C.UserCode2 =" + UserCode + " then C.UserCode1 end"+
+                " order by LM.LatestMessageDate desc";
+
 
             cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
