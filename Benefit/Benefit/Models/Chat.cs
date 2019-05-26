@@ -48,5 +48,13 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
              dbs.SendMessage(m);
         }
+        
+            public int GetSuggestionCode(int UserCode1, int UserCode2)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetSuggestionCode(UserCode1, UserCode2);
+        }
+
+
     }
 }

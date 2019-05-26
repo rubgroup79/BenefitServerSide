@@ -45,6 +45,15 @@ namespace Benefit.Controllers
             Chat c = new Chat();
             c.SendMessage(m);
         }
+
+       
+             [HttpGet]
+        [Route("api/GetSuggestionCode")]
+        public int GetSuggestionCode(int UserCode1, int UserCode2)
+        {
+            Chat c = new Chat();
+            return c.GetSuggestionCode(UserCode1, UserCode2);
+        }
     }
 
 
