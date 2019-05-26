@@ -188,21 +188,7 @@ namespace Benefit.Controllers
             return s.CheckIfUserOnline(UserCode, IsTrainer);
         }
 
-        [HttpGet]
-        [Route("api/GetAllChats")]
-        public IEnumerable<Chat> GetAllChats(int UserCode)
-        {
-            Chat c = new Chat();
-            return c.GetAllChats(UserCode);
-        }
-
-        [HttpGet]
-        [Route("api/GetMessages")]
-        public IEnumerable<Message> GetMessages(int ChatCode)
-        {
-            Chat c = new Chat();
-            return c.GetMessages(ChatCode);
-        }
+       
         
         [HttpPost]
         [Route("api/UpdateTrainingsStatus")]
@@ -211,6 +197,7 @@ namespace Benefit.Controllers
             BenefitSystem b = new BenefitSystem();
             b.UpdateTrainingsStatus();
         }
+
 
     }
 

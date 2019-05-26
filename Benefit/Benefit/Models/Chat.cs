@@ -42,5 +42,11 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             return dbs.GetMessages(ChatCode);
         }
+
+        public void SendMessage(Message m)
+        {
+            DBservices dbs = new DBservices();
+             dbs.SendMessage(m);
+        }
     }
 }

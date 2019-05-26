@@ -50,7 +50,6 @@ namespace Benefit.Models
 
         public void InsertCoupleTraining(CoupleTraining ct)
         {
-
             DBservices dbs = new DBservices();
            dbs.InsertCoupleTraining(this);
         }

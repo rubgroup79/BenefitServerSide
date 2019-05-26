@@ -2163,6 +2163,32 @@ public class DBservices
 
     }
 
+   public void SendMessage(Message m)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+
+        con = connect("BenefitConnectionStringName");
+        try
+        {
+            String pStr = BuildInsertMessageCommand(m);
+            cmd = CreateCommand(pStr, con);
+            cmd.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
 
     public List<CoupleTraining> GetPastCoupleTrainings(int UserCode)
     {
@@ -2482,6 +2508,17 @@ public class DBservices
 
         sb.AppendFormat("Values('{0}',{1},{2},{3},'{4}',{5},{6})", ct.TrainingTime, ct.Latitude.ToString(), ct.Longitude.ToString(), ct.WithTrainer.ToString(),'1', ct.SuggestionCode.ToString(), ct.Price.ToString());
         String prefix = "INSERT INTO CoupleTraining (TrainingTime, Latitude, Longitude, WithTrainer, StatusCode, SuggestionCode, Price ) ";
+        command = prefix + sb.ToString();
+        return command;
+    }
+
+    private String BuildInsertMessageCommand(Message m)
+    {
+        String command;
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendFormat("Values({0},{1},'{2}','{3}')", m.ChatCode.ToString(), m.SenderCode.ToString(), m.SendingTime, m.Content);
+        String prefix = "INSERT INTO Messages (ChatCode, SenderCode, SendingTime,Content ) ";
         command = prefix + sb.ToString();
         return command;
     }
