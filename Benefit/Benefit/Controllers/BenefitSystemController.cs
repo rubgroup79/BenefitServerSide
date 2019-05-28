@@ -199,6 +199,28 @@ namespace Benefit.Controllers
         }
 
 
+
+      
+
+        [HttpPost]
+        [Route("api/InsertNewRating")]
+        public int InsertNewRating([FromBody]Rating r)
+        {
+            BenefitSystem b = new BenefitSystem();
+            return b.InsertNewRating(r);
+        }
+
+
+        [HttpPost]
+        [Route("api/RateUser")]
+        public void RateUser([FromBody]ParameterRate pr)
+        {
+            BenefitSystem b = new BenefitSystem();
+            b.RateUser(pr);
+        }
+
+
+
     }
 
 

@@ -2064,6 +2064,79 @@ public class DBservices
         
     }
 
+    public int InsertNewRating(Rating r)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        String pStr = BuildInsertRatingCommand(r);
+        cmd = CreateCommand(pStr, con);
+
+        try
+        {
+            int RatingCode = Convert.ToInt32(cmd.ExecuteScalar());
+            return RatingCode;
+        }
+        catch (Exception ex)
+        {
+            return 0;
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
+    public void RateUser(ParameterRate pr)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        String pStr = BuildInsertParameterRateCommand(pr);
+        cmd = CreateCommand(pStr, con);
+
+        try
+        {
+           cmd.ExecuteNonQuery();
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
 
     public List<Chat> GetAllChats(int UserCode)
     {
@@ -2563,6 +2636,29 @@ public class DBservices
         command = prefix + sb.ToString();
         return command;
     }
+
+    private String BuildInsertRatingCommand(Rating r)
+    {
+        String command;
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendFormat("Values({0},{1})", r.TraineeCode.ToString(), r.RatedCode.ToString());
+        String prefix = "INSERT INTO Ratings (TraineeCode, RatedCode ) output INSERTED.RatingCode ";
+        command = prefix + sb.ToString();
+        return command;
+    }
+
+    private String BuildInsertParameterRateCommand(ParameterRate pr)
+    {
+        String command;
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendFormat("Values({0},{1}, {2})", pr.RatingCode.ToString(), pr.ParameterCode.ToString(), pr.Rate.ToString());
+        String prefix = "INSERT INTO ParametersRate (RatingCode, ParameterCode, Rate ) ";
+        command = prefix + sb.ToString();
+        return command;
+    }
+    
 
     //---------------------------------------------------------------------------------
     // Create the SqlCommand

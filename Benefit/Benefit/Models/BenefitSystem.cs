@@ -83,5 +83,20 @@ namespace Benefit.Models
             dbs.UpdateTrainingsStatus();
         }
 
+        public int InsertNewRating(Rating r)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.InsertNewRating(r);
+        }
+
+        public void RateUser(ParameterRate r)
+        {
+            DBservices dbs = new DBservices();
+            dbs.RateUser(r);
+        }
+        
+
+
+
     }
 }

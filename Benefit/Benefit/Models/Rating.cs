@@ -10,7 +10,7 @@ namespace Benefit.Models
         public int RatingCode { get; set; }
         public int TraineeCode { get; set; }
         public int RatedCode { get; set; }
- 
+
 
         public Rating(int _traineeCode, int _ratedCode)
         {
@@ -18,6 +18,16 @@ namespace Benefit.Models
             RatedCode = _ratedCode;
         }
 
+        public Rating()
+        {
+
+        }
+
+        public int InsertNewRating(Rating r)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.InsertNewRating(r);
+        }
 
     }
 }
