@@ -181,23 +181,38 @@
 
             //Rating = {
             //    TraineeCode: 1,
-            //    RatedCode: 2
+            //    RatedCode: 2,
+            //    AvgTotalRate:5
             //}
 
             //obj = JSON.stringify(Rating);
             //ajaxCall("POST", "../api/InsertNewRating", obj, successGetLazy, error);
             
 
-            ParametersRate = {
-                RatingCode: 1,
-                ParameterCode: 1,
-                Rate:5
-            }
+            //ParametersRate = {
+            //    RatingCode: 1,
+            //    ParameterCode: 1,
+            //    Rate:5
+            //}
 
-            obj = JSON.stringify(ParametersRate);
+            //obj = JSON.stringify(ParametersRate);
 
-            ajaxCall("POST", "../api/RateUser", obj, successGetLazy, error);
+            //ajaxCall("POST", "../api/RateUser", obj, successGetLazy, error);
 
+            //ajaxCall("GET", "../api/CheckIfRateExists?UserCode=1&RatedUserCode=2","" , successGetLazy, error);
+
+
+            // ParametersRate = {
+            //    RatingCode: 1,
+            //    ParameterCode: 1,
+            //    Rate:5
+            //}
+
+            //obj = JSON.stringify(ParametersRate);
+
+            //ajaxCall("POST", "../api/UpdateExistingRate", obj, successGetLazy, error);
+
+            //ajaxCall("POST", "../api/UpdateUserRate?NewRate=100&UserCode=1","", successGetLazy, error);
 
             //ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
 

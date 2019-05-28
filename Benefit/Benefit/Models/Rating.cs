@@ -10,12 +10,14 @@ namespace Benefit.Models
         public int RatingCode { get; set; }
         public int TraineeCode { get; set; }
         public int RatedCode { get; set; }
+        public float AvgTotalRate { get; set; }
 
 
-        public Rating(int _traineeCode, int _ratedCode)
+        public Rating(int _traineeCode, int _ratedCode, float _avgTotalRate)
         {
             TraineeCode = _traineeCode;
             RatedCode = _ratedCode;
+            AvgTotalRate = _avgTotalRate;
         }
 
         public Rating()
@@ -23,11 +25,6 @@ namespace Benefit.Models
 
         }
 
-        public int InsertNewRating(Rating r)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.InsertNewRating(r);
-        }
 
     }
 }

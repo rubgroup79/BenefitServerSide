@@ -219,7 +219,29 @@ namespace Benefit.Controllers
             b.RateUser(pr);
         }
 
+        [HttpGet]
+        [Route("api/CheckIfRateExists")]
+        public float CheckIfRateExists(int UserCode, int RatedUserCode)
+        {
+            BenefitSystem b = new BenefitSystem();
+            return b.CheckIfRateExists(UserCode, RatedUserCode);
+        }
 
+        [HttpPost]
+        [Route("api/RateUser")]
+        public void UpdateExistingRate([FromBody]ParameterRate pr)
+        {
+            BenefitSystem b = new BenefitSystem();
+            b.RateUser(pr);
+        }
+
+        [HttpPost]
+        [Route("api/UpdateUserRate")]
+        public void UpdateUserRate(float NewRate, int UserCode)
+        {
+            BenefitSystem b = new BenefitSystem();
+            b.UpdateUserRate(NewRate, UserCode);
+        }
 
     }
 

@@ -94,7 +94,25 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             dbs.RateUser(r);
         }
-        
+
+        public float CheckIfRateExists(int UserCode, int RatedUserCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.CheckIfRateExists(UserCode, RatedUserCode);
+        }
+
+        public void UpdateExistingRate(ParameterRate pr)
+        {
+            DBservices dbs = new DBservices();
+            dbs.UpdateExistingRate(pr);
+        }
+
+        public void UpdateUserRate(float NewRate, int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            dbs.UpdateUserRate(NewRate, UserCode);
+        }
+
 
 
 
