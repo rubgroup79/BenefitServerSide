@@ -212,37 +212,45 @@ namespace Benefit.Controllers
 
 
         [HttpPost]
-        [Route("api/RateUser")]
-        public void RateUser([FromBody]ParameterRate pr)
+        [Route("api/InsertParametersRate")]
+        public void InsertParametersRate([FromBody]ParameterRate pr)
         {
             BenefitSystem b = new BenefitSystem();
-            b.RateUser(pr);
+            b.InsertParametersRate(pr);
         }
 
         [HttpGet]
         [Route("api/CheckIfRateExists")]
-        public float CheckIfRateExists(int UserCode, int RatedUserCode)
+        public Rating CheckIfRateExists(int UserCode, int RatedUserCode)
         {
             BenefitSystem b = new BenefitSystem();
             return b.CheckIfRateExists(UserCode, RatedUserCode);
         }
 
         [HttpPost]
-        [Route("api/RateUser")]
-        public void UpdateExistingRate([FromBody]ParameterRate pr)
+        [Route("api/UpdateExistingParametersRate")]
+        public void UpdateExistingParametersRate([FromBody]ParameterRate pr)
         {
             BenefitSystem b = new BenefitSystem();
-            b.RateUser(pr);
+            b.UpdateExistingParametersRate(pr);
         }
+
+        //[HttpPost]
+        //[Route("api/UpdateUserRate")]
+        //public void UpdateUserRate(int RatedCode)
+        //{
+        //    BenefitSystem b = new BenefitSystem();
+        //    b.UpdateUserRate(RatedCode);
+        //}
 
         [HttpPost]
-        [Route("api/UpdateUserRate")]
-        public void UpdateUserRate(float NewRate, int UserCode)
+        [Route("api/UpdateExistingAvarageRate")]
+        public void UpdateExistingAvarageRate(Rating r)
         {
             BenefitSystem b = new BenefitSystem();
-            b.UpdateUserRate(NewRate, UserCode);
+            b.UpdateExistingAvarageRate(r);
         }
-
+        
     }
 
 

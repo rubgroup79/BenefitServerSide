@@ -48,5 +48,31 @@ namespace Benefit.Controllers
             HistoryGroupTraining hgt = new HistoryGroupTraining();
             return hgt.GetPastGroupTrainings(UserCode);
         }
+
+        [HttpGet]
+        [Route("api/GetGroupDetails")]
+        public HistoryGroupTraining GetGroupDetails(int GroupCode)
+        {
+            HistoryGroupTraining hgt = new HistoryGroupTraining();
+            return hgt.GetGroupDetails(GroupCode);
+        }
+
+        [HttpGet]
+        [Route("api/GetGroupParticipants")]
+        public IEnumerable<User> GetGroupParticipants(int GroupCode)
+        {
+            HistoryGroupTraining hgt = new HistoryGroupTraining();
+            return hgt.GetGroupParticipants(GroupCode);
+        }
+
+        [HttpGet]
+        [Route("api/CancelGroupTraining")]
+        public List<User> CancelGroupTraining(int GroupCode)
+        {
+            HistoryGroupTraining hgt = new HistoryGroupTraining();
+            return hgt.CancelGroupTraining(GroupCode);
+        }
+
+
     }
 }

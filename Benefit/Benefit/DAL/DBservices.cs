@@ -128,7 +128,7 @@ public class DBservices
 
     }
 
-    public bool InsertSportCategories(int[] SportCategories, int UserCode)
+    public bool InsertSportCategories(List<SportCategory> SportCategories, int UserCode)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -142,9 +142,9 @@ public class DBservices
         }
         try
         {
-            for (int i = 0; i < SportCategories.Length; i++)
+            for (int i = 0; i < SportCategories.Count(); i++)
             {
-                String str = BuildInsertSportCategoriesCommand(UserCode, SportCategories[i]);
+                String str = BuildInsertSportCategoriesCommand(UserCode, SportCategories[i].CategoryCode);
                 cmd = CreateCommand(str, con);
                 int numEffected = cmd.ExecuteNonQuery();
 
@@ -1423,17 +1423,22 @@ public class DBservices
 
     public void CancelGroupParticipant(int GroupTrainingCode, int UserCode)
     {
-
+        UpdateNumOfParticipants(-1, GroupTrainingCode);
         SqlConnection con = null;
         SqlCommand cmd;
 
         try
         {
             con = connect("BenefitConnectionStringName");
-            String selectSTR = "Update GroupParticipants set StatusCode=2 where UserCode=" + UserCode + " and GroupTrainingCode= " + GroupTrainingCode;
+            // update status for the participant
+            String selectSTR = "Update GroupParticipants set StatusCode=2" +
+                " where UserCode=" + UserCode + " and GroupTrainingCode= " + GroupTrainingCode;
             cmd = new SqlCommand(selectSTR, con);
             cmd.ExecuteNonQuery();
-            UpdateNumOfParticipants(-1, GroupTrainingCode);
+            //  check if current < min and its 15m befor the training 
+            CheckNumOfParticipants(GroupTrainingCode);
+
+
         }
 
         catch (Exception ex)
@@ -1449,6 +1454,192 @@ public class DBservices
             }
         }
     }
+
+    public void CheckNumOfParticipants(int GroupTrainingCode)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+            // update status for the participant and then check if current < min and its 15m befor the training 
+            String selectSTR =
+                " select HGT.GroupTrainingCode from HistoryGroupTraining HGT" +
+                " where (HGT.GroupTrainingCode = " + GroupTrainingCode + ") and(HGT.CurrentParticipants < HGT.MinParticipants) " +
+                " and(DATEDIFF(MINUTE, HGT.TrainingTime, getdate()) <= 15) and(HGT.StatusCode = 1) ";
+            // if it returns a value, cancel group 
+            cmd = new SqlCommand(selectSTR, con);
+
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            // if the group is less then min & 15m befor training 
+            if (dr.Read())
+            {
+                // int group = Convert.ToInt32(dr["GroupTrainingCode"]);
+                CancelGroupTraining(GroupTrainingCode);
+            }
+
+
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+
+    public HistoryGroupTraining GetGroupDetails(int GroupCode)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select *" +
+                " from HistoryGroupTraining HGT inner join SportCategories SC on SC.CategoryCode=HGT.SportCategoryCode" +
+                " where HGT.GroupTrainingCode = " + GroupCode;
+
+
+            cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            HistoryGroupTraining hgt = new HistoryGroupTraining();
+            while (dr.Read())
+            {
+                hgt.TrainingCode = Convert.ToInt32(dr["GroupTrainingCode"]);
+                hgt.TrainingTime = Convert.ToString(dr["TrainingTime"]);
+                hgt.Latitude = Convert.ToSingle(dr["Latitude"]);
+                hgt.Longitude = Convert.ToSingle(dr["Longitude"]);
+                hgt.WithTrainer = Convert.ToInt32(dr["WithTrainer"]);
+                hgt.CreatorCode = Convert.ToInt32(dr["CreatorCode"]);
+                hgt.MinParticipants = Convert.ToInt32(dr["MinParticipants"]);
+                hgt.MaxParticipants = Convert.ToInt32(dr["MaxParticipants"]);
+                hgt.CurrentParticipants = Convert.ToInt32(dr["CurrentParticipants"]);
+                hgt.SportCategory = Convert.ToString(dr["Description"]);
+                hgt.Price = Convert.ToInt32(dr["Price"]);
+
+            }
+
+            return hgt;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
+    public List<User> GetGroupParticipants(int GroupCode)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select U.UserCode, U.FirstName, U.LastName, U.Picture, U.Token, U.IsTrainer" +
+                " from Users U inner join GroupParticipants GP on GP.UserCode = U.UserCode" +
+                " where GP.GroupTrainingCode = " + GroupCode + " and GP.StatusCode = 1";
+
+
+            cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<User> ul = new List<User>();
+            while (dr.Read())
+            {
+                User u = new User();
+                u.UserCode = Convert.ToInt32(dr["UserCode"]);
+                u.FirstName = Convert.ToString(dr["FirstName"]);
+                u.LastName = Convert.ToString(dr["LastName"]);
+                u.Picture = Convert.ToString(dr["Picture"]);
+                u.IsTrainer = Convert.ToInt32(dr["IsTrainer"]);
+                u.Token = Convert.ToString(dr["Token"]);
+                ul.Add(u);
+            }
+
+            return ul;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
+
+
+    public List<User> CancelGroupTraining(int GroupCode)
+    {
+
+        SqlConnection con = null;
+        SqlCommand cmd;
+        List<User> Participants = new List<User>();
+        Participants = GetGroupParticipants(GroupCode);
+
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR =
+                " update HistoryGroupTraining SET StatusCode=2" + // cancel group
+                " where GroupTrainingCode = " + GroupCode +
+                " update GroupParticipants SET StatusCode=2" + //change all participants status to canceled
+                " where GroupTrainingCode = " + GroupCode +
+                " DELETE FROM ActiveGroupTraining " +  // delete from active
+                " where GroupTrainingCode = " + GroupCode;
+
+            cmd = new SqlCommand(selectSTR, con);
+            cmd.ExecuteNonQuery();
+
+
+            // to send push notification at client side
+            return Participants;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
 
     public string GetToken(int UserCode)
     {
@@ -1879,95 +2070,64 @@ public class DBservices
     public User ShowProfile(int UserCode)
 
     {
-
         SqlConnection con = null;
-
-
-
+        SqlConnection con1 = null;
         try
 
         {
-
             con = connect("BenefitConnectionStringName");
-
-
-
-            String selectSTR = "select U.UserCode, U.FirstName, U.LastName, U.Gender, datediff(year, U.DateOfBirth, getdate()) as Age, U.Picture" +
-
-                  " from Users as U" +
-
-                  " where U.UserCode = " + UserCode;
-
-
+            con1 = connect("BenefitConnectionStringName");
+            String selectSTR = "select U.UserCode, U.FirstName, U.LastName, U.Gender, datediff(year, U.DateOfBirth, getdate()) as Age, U.Picture , U.Rate, U.IsTrainer" +
+                " from Users as U" +
+                " where U.UserCode = " + UserCode;
 
             SqlCommand cmd = new SqlCommand(selectSTR, con);
-
-
-
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
-
-
             User u = new Trainee();
 
-
-
-            if (dr.Read())
-
+            if(dr.Read())
             {
-
                 u.UserCode = Convert.ToInt32(dr["UserCode"]);
-
                 u.FirstName = Convert.ToString(dr["FirstName"]);
-
                 u.LastName = Convert.ToString(dr["LastName"]);
-
                 u.Gender = Convert.ToString(dr["Gender"]);
-
                 u.Picture = Convert.ToString(dr["Picture"]);
-
-
-
-                return u;
-
+                u.Age = Convert.ToInt32(dr["Age"]);
+                u.Rate = Convert.ToSingle(dr["Rate"]);
+                u.IsTrainer = Convert.ToInt32(dr["IsTrainer"]);
+             
             }
 
-            else
+            selectSTR = "select SC.Description" +
+                " from UserSportCategories as USC inner join SportCategories as SC on USC.CategoryCode = SC.CategoryCode" +
+                " where UserCode = " + UserCode;
 
+            SqlCommand cmd1 = new SqlCommand(selectSTR, con1);
+            SqlDataReader dr1 = cmd1.ExecuteReader(CommandBehavior.CloseConnection);
+
+            List<SportCategory> scl = new List<SportCategory>();
+            while(dr1.Read())
             {
-
-                u.UserCode = 0;
-
-                return u;
-
+                SportCategory sc = new SportCategory();
+                sc.Description = Convert.ToString(dr1["Description"]);
+                scl.Add(sc);
             }
-
+            u.SportCategories = scl;
+            return u;
         }
-
-
 
         catch (Exception ex)
-
         {
-
             throw (ex);
-
         }
-
 
 
         finally
-
         {
-
             if (con != null)
-
             {
-
                 con.Close();
-
             }
-
         }
 
     }
@@ -2084,7 +2244,7 @@ public class DBservices
         try
         {
             int RatingCode = Convert.ToInt32(cmd.ExecuteScalar());
-            UpdateUserRate(r.AvgTotalRate, r.RatedCode);
+            UpdateUserRate( r.RatedCode);
             return RatingCode;
         }
         catch (Exception ex)
@@ -2103,7 +2263,7 @@ public class DBservices
 
     }
 
-    public void UpdateExistingRate(ParameterRate pr)
+    public void UpdateExistingParametersRate(ParameterRate pr)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -2118,12 +2278,13 @@ public class DBservices
         }
 
         String pStr = "UPDATE ParametersRate" +
-            "SET Rate = " + pr.Rate +
-            "WHERE RatingCode = "+pr.RatingCode+" and ParameterCode = "+pr.ParameterCode;
+            " SET Rate = " + pr.Rate +
+            " WHERE RatingCode = "+pr.RatingCode+" and ParameterCode = "+pr.ParameterCode;
 
         try
         {
              cmd = CreateCommand(pStr, con);
+             cmd.ExecuteNonQuery();
         }
         catch (Exception ex)
         {
@@ -2140,7 +2301,46 @@ public class DBservices
 
     }
 
-    public void UpdateUserRate(float NewRate, int UserCode)
+    public void UpdateExistingAvarageRate(Rating r)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        String pStr = "UPDATE Ratings" +
+            " SET AvgTotalRate = " + r.AvgTotalRate +
+            " WHERE RatingCode = " + r.RatingCode;
+
+        try
+        {
+            cmd = CreateCommand(pStr, con);
+            cmd.ExecuteNonQuery();
+            UpdateUserRate(r.RatedCode);
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
+    public void UpdateUserRate(int RatedCode)
     {
         SqlConnection con;
         SqlConnection con1;
@@ -2157,23 +2357,25 @@ public class DBservices
             throw (ex);
         }
 
-        String pStr = "select U.Rate" +
-                " from Users U" +
-                " where U.UserCode = 1";
+        String pStr = "select AVG(R.AvgTotalRate) as 'Rate'" +
+            " from Ratings R" +
+            " where R.RatedCode = " + RatedCode;
+
         cmd = CreateCommand(pStr, con);
         SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
-        float previousRate = 0;
+        float newRate = 0;
         while (dr.Read())
         {
-            previousRate = Convert.ToSingle(dr["Rate"]);
+            newRate = Convert.ToSingle(dr["Rate"]);
         }
+
         dr.Close();
-        float newCalculatedRate = (previousRate + NewRate) / 2;
 
         pStr = "UPDATE Users" +
-            " SET Rate ="+ newCalculatedRate +
-            " WHERE Users.UserCode =" + UserCode;
+            " SET Rate ="+ newRate +
+            " WHERE Users.UserCode =" + RatedCode;
+
         cmd1 = CreateCommand(pStr, con1);
         try
         {
@@ -2194,7 +2396,7 @@ public class DBservices
 
     }
 
-    public void RateUser(ParameterRate pr)
+    public void InsertParametersRate(ParameterRate pr)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -2230,7 +2432,7 @@ public class DBservices
 
     }
 
-    public float CheckIfRateExists(int UserCode, int RatedUserCode)
+    public Rating CheckIfRateExists(int UserCode, int RatedUserCode)
     {
         SqlConnection con;
         SqlCommand cmd;
@@ -2244,7 +2446,7 @@ public class DBservices
             throw (ex);
         }
 
-        String pStr = "select R.AvgTotalRate" +
+        String pStr = "select R.AvgTotalRate, R.RatingCode" +
             " from Ratings as R" +
             " where R.TraineeCode = " + UserCode + " and R.RatedCode = " + RatedUserCode;
         cmd = CreateCommand(pStr, con);
@@ -2252,13 +2454,14 @@ public class DBservices
         try
         {
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-            float existingRate = 0;
+            Rating r = new Rating();
             while (dr.Read())
             {
-                existingRate = Convert.ToSingle(dr["AvgTotalRate"]);
+                r.AvgTotalRate = Convert.ToSingle(dr["AvgTotalRate"]);
+                r.RatingCode= Convert.ToInt32(dr["RatingCode"]);
             }
 
-            return existingRate;
+            return r;
         }
         catch (Exception ex)
         {

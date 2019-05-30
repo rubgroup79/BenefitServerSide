@@ -57,5 +57,25 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             return dbs.GetPastGroupTrainings(UserCode);
         }
+
+        public HistoryGroupTraining GetGroupDetails(int GroupCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetGroupDetails(GroupCode);
+        }
+
+        public List<User> GetGroupParticipants(int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetGroupParticipants(UserCode);
+        }
+
+
+        public List<User> CancelGroupTraining(int GroupCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.CancelGroupTraining(GroupCode);
+        }
+
     }
 }

@@ -89,32 +89,35 @@ namespace Benefit.Models
             return dbs.InsertNewRating(r);
         }
 
-        public void RateUser(ParameterRate r)
+        public void InsertParametersRate(ParameterRate r)
         {
             DBservices dbs = new DBservices();
-            dbs.RateUser(r);
+            dbs.InsertParametersRate(r);
         }
 
-        public float CheckIfRateExists(int UserCode, int RatedUserCode)
+        public Rating CheckIfRateExists(int UserCode, int RatedUserCode)
         {
             DBservices dbs = new DBservices();
             return dbs.CheckIfRateExists(UserCode, RatedUserCode);
         }
 
-        public void UpdateExistingRate(ParameterRate pr)
+        public void UpdateExistingParametersRate(ParameterRate pr)
         {
             DBservices dbs = new DBservices();
-            dbs.UpdateExistingRate(pr);
+            dbs.UpdateExistingParametersRate(pr);
         }
 
-        public void UpdateUserRate(float NewRate, int UserCode)
+        //public void UpdateUserRate(float NewRate, int RatedCode)
+        //{
+        //    DBservices dbs = new DBservices();
+        //    dbs.UpdateUserRate(NewRate, RatedCode);
+        //}
+
+        public void UpdateExistingAvarageRate(Rating r)
         {
             DBservices dbs = new DBservices();
-            dbs.UpdateUserRate(NewRate, UserCode);
+            dbs.UpdateExistingAvarageRate(r);
         }
-
-
-
 
     }
 }

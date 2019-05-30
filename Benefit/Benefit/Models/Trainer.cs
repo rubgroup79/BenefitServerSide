@@ -9,8 +9,8 @@ namespace Benefit.Models
     {
         public int PersonalTrainingPrice { get; set; }
 
-        public Trainer(string _email, string _firstName, string _lastName, string _password, string _gender, string _dateOfBirth, string _picture, int _searchRadius,int _isTrainer, int[] _sportCategories ,int _personalTrainingPrice,string _token, float _rate=0)
-            : base(_email, _firstName, _lastName, _password, _gender, _dateOfBirth, _picture, _searchRadius,_isTrainer , _sportCategories, _token, _rate )
+        public Trainer(string _email, string _firstName, string _lastName, string _password, string _gender, string _dateOfBirth, string _picture, int _searchRadius,int _isTrainer, List<SportCategory> _sportCategories ,int _personalTrainingPrice,string _token, int _age, float _rate=0)
+            : base(_email, _firstName, _lastName, _password, _gender, _dateOfBirth, _picture, _searchRadius,_isTrainer , _sportCategories, _token, _age, _rate )
         {
             PersonalTrainingPrice = _personalTrainingPrice;
         }
@@ -26,7 +26,6 @@ namespace Benefit.Models
             int UserCode = dbs.SignInTrainer(this);
             return UserCode;
         }
-
 
     }
 }

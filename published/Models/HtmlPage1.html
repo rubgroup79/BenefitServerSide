@@ -176,7 +176,62 @@
             //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
           //  ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
-            ajaxCall("GET", "../api/GetSuggestionCode?UserCode1=1&UserCode2=2", "", successGetLazy, error);
+            
+            //ajaxCall("GET", "../api/GetSuggestionCode?UserCode1=1&UserCode2=2", "", successGetLazy, error);
+
+            //Rating = {
+            //    TraineeCode: 1,
+            //    RatedCode: 2,
+            //    AvgTotalRate:5
+            //}
+
+            //obj = JSON.stringify(Rating);
+            //ajaxCall("POST", "../api/InsertNewRating", obj, successGetLazy, error);
+            
+
+            //ParametersRate = {
+            //    RatingCode: 39,
+            //    ParameterCode: 1,
+            //    Rate:5
+            //}
+
+            //obj = JSON.stringify(ParametersRate);
+
+            //ajaxCall("POST", "../api/InsertParametersRate", obj, successGetLazy, error);
+
+            //ajaxCall("GET", "../api/CheckIfRateExists?UserCode=1&RatedUserCode=2","" , successGetLazy, error);
+            ajaxCall("GET", "../api/ShowProfile?UserCode=1", "", successGetLazy, error);
+
+            // ParametersRate = {
+            //    RatingCode: 1,
+            //    ParameterCode: 1,
+            //    Rate:5
+            //}
+
+            //obj = JSON.stringify(ParametersRate);
+
+            //ajaxCall("POST", "../api/UpdateExistingParametersRate", obj, successGetLazy, error);
+
+            //Rating = {
+            //    RatingCode: 44,
+            //    AvgTotalRate: 5,
+            //    RatedCode:2
+            //}
+            //obj = JSON.stringify(Rating);
+
+            //ajaxCall("POST", "../api/UpdateExistingAvarageRate", obj, successGetLazy, error);
+
+            //   ParametersRate = {
+            //    RatingCode: 27,
+            //    ParameterCode: 5,
+            //    Rate:2
+            //}
+
+            //obj = JSON.stringify(ParametersRate);
+
+            //ajaxCall("POST", "../api/UpdateExistingParametersRate", obj, successGetLazy, error);
+
+            
 
             //ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
 

@@ -18,10 +18,12 @@ namespace Benefit.Models
         public float Rate { get; set; }
         public int SearchRadius { get; set; }
         public int IsTrainer { get; set; }
-        public int[] SportCategories { get; set; }
+        //public int[] SportCategories { get; set; }
         public string Token { get; set; }
+        public int Age { get; set; }
+        public List<SportCategory> SportCategories { get; set; }
 
-        public User(string _email, string _firstName, string _lastName, string _password, string _gender, string _dateOfBirth, string _picture, int _searchRadius, int _isTrainer, int[] _sportCategories ,string _token, float _rate = 0)
+        public User(string _email, string _firstName, string _lastName, string _password, string _gender, string _dateOfBirth, string _picture, int _searchRadius, int _isTrainer, List<SportCategory> _sportCategories ,string _token, int _age, float _rate = 0)
         {
             Email = _email;
             FirstName = _firstName;
@@ -35,6 +37,7 @@ namespace Benefit.Models
             IsTrainer = _isTrainer;
             SportCategories = _sportCategories;
             Token = _token;
+            Age = _age;
         }
 
         public User()
