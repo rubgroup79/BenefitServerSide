@@ -2067,6 +2067,88 @@ public class DBservices
 
     }
 
+    public List<SportCategory> GetSportCategories()
+    {
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select * from SportCategories";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            List<SportCategory> scl = new List<SportCategory>();
+            while (dr.Read())
+            {
+                SportCategory sc = new SportCategory();
+                sc.CategoryCode = Convert.ToInt32(dr["CategoryCode"]);
+                sc.Description = Convert.ToString(dr["Description"]);
+                scl.Add(sc);
+            }
+            return scl;
+            
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    public List<AverageRateParameters> GetAvarageParametersRate(int UserCode)
+    {
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select PR.ParameterCode,  RP.Description, AVG(PR.Rate) as 'AverageRate'" +
+                " from Ratings as R inner join ParametersRate as PR ON R.RatingCode = PR.RatingCode" +
+                " inner join RateParameters as RP ON RP.ParameterCode = PR.ParameterCode" +
+                " where R.RatedCode = "+ UserCode +
+                " group by PR.ParameterCode , RP.Description";
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            List<AverageRateParameters> arpl = new List<AverageRateParameters>();
+            while (dr.Read())
+            {
+                AverageRateParameters arp = new AverageRateParameters();
+                RateParameter rateParameter = new RateParameter();
+                rateParameter.Description = Convert.ToString(dr["ParameterCode"]);
+                rateParameter.Description = Convert.ToString(dr["Description"]);
+                arp.Parameter = rateParameter;
+                arp.AverageRate = Convert.ToSingle(dr["AverageRate"]);
+                arpl.Add(arp);
+            }
+            return arpl;
+
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
     public User ShowProfile(int UserCode)
 
     {

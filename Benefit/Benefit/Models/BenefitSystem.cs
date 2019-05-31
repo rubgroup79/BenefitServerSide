@@ -119,5 +119,18 @@ namespace Benefit.Models
             dbs.UpdateExistingAvarageRate(r);
         }
 
+        public List<SportCategory> GetSportCategories()
+        {
+            DBservices dbs = new DBservices();
+             return dbs.GetSportCategories();
+        }
+
+        public List<AverageRateParameters> GetAvarageParametersRate(int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetAvarageParametersRate(UserCode);
+        }
+
+        
     }
 }

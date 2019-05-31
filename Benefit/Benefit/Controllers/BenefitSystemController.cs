@@ -251,6 +251,23 @@ namespace Benefit.Controllers
             b.UpdateExistingAvarageRate(r);
         }
         
+        [HttpGet]
+        [Route("api/GetSportCategories")]
+        public IEnumerable<SportCategory> GetSportCategories()
+        {
+            BenefitSystem b = new BenefitSystem();
+           return  b.GetSportCategories();
+        }
+
+        [HttpGet]
+        [Route("api/GetAvarageParametersRate")]
+        public IEnumerable<AverageRateParameters> GetAvarageParametersRate(int UserCode)
+        {
+            BenefitSystem b = new BenefitSystem();
+            return b.GetAvarageParametersRate(UserCode);
+        }
+
+        
     }
 
 

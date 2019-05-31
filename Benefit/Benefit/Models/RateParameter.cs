@@ -9,7 +9,11 @@ namespace Benefit.Models
     {
         public int ParameterCode { get; set; }
         public string Description { get; set; }
- 
+
+        public RateParameter()
+        {
+
+        }
 
         public RateParameter(int _parameterCode, string _description)
         {

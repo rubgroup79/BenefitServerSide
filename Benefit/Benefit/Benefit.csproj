@@ -205,13 +205,14 @@
     <Compile Include="Models\Chat.cs" />
     <Compile Include="Models\CurrentOnlineTrainee.cs" />
     <Compile Include="Models\OnlineHistory.cs" />
+    <Compile Include="Models\Statuses.cs" />
     <Compile Include="Models\SuggestionResult.cs" />
     <Compile Include="Models\Result.cs" />
     <Compile Include="Models\OnlineHistoryTrainer.cs" />
     <Compile Include="Models\CoupleTrainingSuggestion.cs" />
     <Compile Include="Models\SportCategory.cs" />
     <Compile Include="Models\RateParameter.cs" />
-    <Compile Include="Models\Status.cs" />
+    <Compile Include="Models\AverageRateParameters.cs" />
     <Compile Include="Models\ParameterRate.cs" />
     <Compile Include="Models\Rating.cs" />
     <Compile Include="Models\OnlineHistoryTrainee.cs" />
