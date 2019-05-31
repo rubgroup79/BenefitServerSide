@@ -267,6 +267,13 @@ namespace Benefit.Controllers
             return b.GetAvarageParametersRate(UserCode);
         }
 
+        [HttpGet]
+        [Route("api/GetTraineeProfileDetails")]
+        public TraineeDetails GetTraineeProfileDetails(int UserCode)
+        {
+            BenefitSystem b = new BenefitSystem();
+            return b.GetTraineeProfileDetails(UserCode);
+        }
         
     }
 

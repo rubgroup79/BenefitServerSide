@@ -1681,6 +1681,97 @@ public class DBservices
         }
     }
 
+    public TraineeDetails GetTraineeProfileDetails(int UserCode)
+    {
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select U.FirstName , U.LastName, U.Email, datediff(year, U.DateOfBirth, getdate()) as Age, U.Picture, U.Rate, U.SearchRadius, T.MaxBudget,T.PartnerGender, T.TrainerGender, T.MinPartnerAge, T.MaxPartnerAge" +
+                " from Users as U inner join Trainees as T on U.UserCode = T.TraineeCode" +
+                " where U.UserCode ="+UserCode;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            TraineeDetails td = new TraineeDetails();
+
+            while (dr.Read())
+            {
+                td.FirstName = Convert.ToString(dr["FirstName"]);
+                td.LastName = Convert.ToString(dr["LastName"]);
+                td.Email = Convert.ToString(dr["Email"]);
+                td.Age = Convert.ToInt32(dr["Age"]);
+                td.Picture = Convert.ToString(dr["Picture"]);
+                td.Rate = Convert.ToSingle(dr["Rate"]);
+                td.SearchRadius = Convert.ToInt32(dr["SearchRadius"]);
+                td.MaxBudget = Convert.ToInt32(dr["MaxBudget"]);
+                td.PartnerGender = Convert.ToString(dr["PartnerGender"]);
+                td.TrainerGender = Convert.ToString(dr["TrainerGender"]);
+                td.MinPartnerAge = Convert.ToInt32(dr["MinPartnerAge"]);
+                td.MaxPartnerAge = Convert.ToInt32(dr["MaxPartnerAge"]);
+            }
+
+            td.SportCategories = GetUserSportCategories(UserCode);
+            return td;
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    public List<SportCategory> GetUserSportCategories(int UserCode)
+    {
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select SC.CategoryCode, SC.Description" +
+                " from UserSportCategories as USC inner join SportCategories as SC on SC.CategoryCode = USC.CategoryCode" +
+                " where UserCode = " + UserCode;
+
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            List<SportCategory> scl = new List<SportCategory>();
+            while (dr.Read())
+            {
+                SportCategory sc = new SportCategory();
+                sc.CategoryCode = Convert.ToInt32(dr["CategoryCode"]);
+                sc.Description = Convert.ToString(dr["Description"]);
+                scl.Add(sc);
+                
+            }
+
+            return scl;
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
     //קורה בכל פעם שמציגים הצעות
     // add this to a process every X minutes 
     public void UpdateSuggestionsStatus(int UserCode)

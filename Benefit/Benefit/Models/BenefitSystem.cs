@@ -131,6 +131,11 @@ namespace Benefit.Models
             return dbs.GetAvarageParametersRate(UserCode);
         }
 
-        
+        public TraineeDetails GetTraineeProfileDetails(int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetTraineeProfileDetails(UserCode);
+        }
+
     }
 }
