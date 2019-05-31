@@ -175,8 +175,8 @@
             //    }
             //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
-          //  ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
-            
+            //  ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
+
             //ajaxCall("GET", "../api/GetSuggestionCode?UserCode1=1&UserCode2=2", "", successGetLazy, error);
 
             //Rating = {
@@ -187,7 +187,7 @@
 
             //obj = JSON.stringify(Rating);
             //ajaxCall("POST", "../api/InsertNewRating", obj, successGetLazy, error);
-            
+
 
             //ParametersRate = {
             //    RatingCode: 39,
@@ -200,10 +200,36 @@
             //ajaxCall("POST", "../api/InsertParametersRate", obj, successGetLazy, error);
 
             //ajaxCall("GET", "../api/CheckIfRateExists?UserCode=1&RatedUserCode=2","" , successGetLazy, error);
-           // ajaxCall("GET", "../api/ShowProfile?UserCode=1", "", successGetLazy, error);
+            // ajaxCall("GET", "../api/ShowProfile?UserCode=1", "", successGetLazy, error);
             //ajaxCall("GET", "../api/GetSportCategories", "", successGetLazy, error);
             //ajaxCall("GET", "../api/GetAvarageParametersRate?UserCode=2", "", successGetLazy, error);
-            ajaxCall("GET", "../api/GetTraineeProfileDetails?UserCode=1", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/GetTraineeProfileDetails?UserCode=1", "", successGetLazy, error);
+
+            //TraineeDetails = {
+            //    TraineeCode: 40,
+            //    Picture: 'stav',
+            //    SearchRadius: 4000,
+            //    MaxBudget: 4000,
+            //    PartnerGender: 'stav',
+            //    TrainerGender: 'stav',
+            //    MinPartnerAge: 4000,
+            //    MaxPartnerAge: 4000,
+            //    SportCategories: [
+            //        {
+            //            CategoryCode: 8,
+            //            Description: 'Short Run',
+            //        },
+            //        {
+            //            CategoryCode: 2,
+            //            Description: 'Jogging',
+            //        },
+            //    ]
+
+            //}
+            //obj = JSON.stringify(TraineeDetails);
+            
+            //ajaxCall("POST", "../api/UpdateTraineeDetails", obj, successGetLazy, error);
+
             // ParametersRate = {
             //    RatingCode: 1,
             //    ParameterCode: 1,
@@ -233,7 +259,7 @@
 
             //ajaxCall("POST", "../api/UpdateExistingParametersRate", obj, successGetLazy, error);
 
-            
+
 
             //ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
 

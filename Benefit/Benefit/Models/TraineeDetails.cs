@@ -8,7 +8,6 @@ namespace Benefit.Models
     public class TraineeDetails
     {
         public int TraineeCode { get; set; }
-        public string Description { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Email { get; set; }
@@ -31,10 +30,9 @@ namespace Benefit.Models
 
         }
 
-        public TraineeDetails(int _traineeCode, string _description, string _firstName, string _lastName, string _email, string _password, int _age, string _picture, float _rate, int _searchRadius, int _maxBudget, string _partnerGender, string _trainerGender, int _minPartnerAge, int _maxPartnerAge, List<SportCategory> _sportCategories)
+        public TraineeDetails(int _traineeCode, string _firstName, string _lastName, string _email, string _password, int _age, string _picture, float _rate, int _searchRadius, int _maxBudget, string _partnerGender, string _trainerGender, int _minPartnerAge, int _maxPartnerAge, List<SportCategory> _sportCategories)
         {
             TraineeCode = _traineeCode;
-            Description = _description;
             FirstName = _firstName;
             LastName = _lastName;
             Email = _email;

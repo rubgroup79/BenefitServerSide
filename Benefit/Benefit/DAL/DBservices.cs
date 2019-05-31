@@ -1692,7 +1692,7 @@ public class DBservices
 
             String selectSTR = "select U.FirstName , U.LastName, U.Email, datediff(year, U.DateOfBirth, getdate()) as Age, U.Picture, U.Rate, U.SearchRadius, T.MaxBudget,T.PartnerGender, T.TrainerGender, T.MinPartnerAge, T.MaxPartnerAge" +
                 " from Users as U inner join Trainees as T on U.UserCode = T.TraineeCode" +
-                " where U.UserCode ="+UserCode;
+                " where U.UserCode =" + UserCode;
             SqlCommand cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
@@ -1731,6 +1731,42 @@ public class DBservices
         }
     }
 
+    public void UpdateTraineeDetails(TraineeDetails td)
+    {
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "UPDATE Users" +
+                " SET Picture = '" + td.Picture + "', SearchRadius = " + td.SearchRadius + "" +
+                " WHERE UserCode = " + td.TraineeCode + ";" +
+                " UPDATE Trainees" +
+                " SET MaxBudget = " + td.MaxBudget + ", PartnerGender = '" + td.PartnerGender + "', TrainerGender = '" + td.TrainerGender + "', MinPartnerAge = " + td.MinPartnerAge + ", MaxPartnerAge = " + td.MaxPartnerAge +
+                " WHERE TraineeCode = " + td.TraineeCode + ";" +
+                " DELETE FROM UserSportCategories WHERE UserCode = " + td.TraineeCode + "";
+                SqlCommand cmd = new SqlCommand(selectSTR, con);
+                cmd.ExecuteNonQuery();
+                InsertSportCategories(td.SportCategories, td.TraineeCode);
+
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+
     public List<SportCategory> GetUserSportCategories(int UserCode)
     {
 
@@ -1754,7 +1790,7 @@ public class DBservices
                 sc.CategoryCode = Convert.ToInt32(dr["CategoryCode"]);
                 sc.Description = Convert.ToString(dr["Description"]);
                 scl.Add(sc);
-                
+
             }
 
             return scl;
@@ -2179,7 +2215,7 @@ public class DBservices
                 scl.Add(sc);
             }
             return scl;
-            
+
         }
 
         catch (Exception ex)
@@ -2206,7 +2242,7 @@ public class DBservices
             String selectSTR = "select PR.ParameterCode,  RP.Description, AVG(PR.Rate) as 'AverageRate'" +
                 " from Ratings as R inner join ParametersRate as PR ON R.RatingCode = PR.RatingCode" +
                 " inner join RateParameters as RP ON RP.ParameterCode = PR.ParameterCode" +
-                " where R.RatedCode = "+ UserCode +
+                " where R.RatedCode = " + UserCode +
                 " group by PR.ParameterCode , RP.Description";
 
             SqlCommand cmd = new SqlCommand(selectSTR, con);
@@ -2258,7 +2294,7 @@ public class DBservices
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
             User u = new Trainee();
 
-            if(dr.Read())
+            if (dr.Read())
             {
                 u.UserCode = Convert.ToInt32(dr["UserCode"]);
                 u.FirstName = Convert.ToString(dr["FirstName"]);
@@ -2268,7 +2304,7 @@ public class DBservices
                 u.Age = Convert.ToInt32(dr["Age"]);
                 u.Rate = Convert.ToSingle(dr["Rate"]);
                 u.IsTrainer = Convert.ToInt32(dr["IsTrainer"]);
-             
+
             }
 
             selectSTR = "select SC.Description" +
@@ -2279,7 +2315,7 @@ public class DBservices
             SqlDataReader dr1 = cmd1.ExecuteReader(CommandBehavior.CloseConnection);
 
             List<SportCategory> scl = new List<SportCategory>();
-            while(dr1.Read())
+            while (dr1.Read())
             {
                 SportCategory sc = new SportCategory();
                 sc.Description = Convert.ToString(dr1["Description"]);
@@ -2417,7 +2453,7 @@ public class DBservices
         try
         {
             int RatingCode = Convert.ToInt32(cmd.ExecuteScalar());
-            UpdateUserRate( r.RatedCode);
+            UpdateUserRate(r.RatedCode);
             return RatingCode;
         }
         catch (Exception ex)
@@ -2452,12 +2488,12 @@ public class DBservices
 
         String pStr = "UPDATE ParametersRate" +
             " SET Rate = " + pr.Rate +
-            " WHERE RatingCode = "+pr.RatingCode+" and ParameterCode = "+pr.ParameterCode;
+            " WHERE RatingCode = " + pr.RatingCode + " and ParameterCode = " + pr.ParameterCode;
 
         try
         {
-             cmd = CreateCommand(pStr, con);
-             cmd.ExecuteNonQuery();
+            cmd = CreateCommand(pStr, con);
+            cmd.ExecuteNonQuery();
         }
         catch (Exception ex)
         {
@@ -2546,7 +2582,7 @@ public class DBservices
         dr.Close();
 
         pStr = "UPDATE Users" +
-            " SET Rate ="+ newRate +
+            " SET Rate =" + newRate +
             " WHERE Users.UserCode =" + RatedCode;
 
         cmd1 = CreateCommand(pStr, con1);
@@ -2623,7 +2659,7 @@ public class DBservices
             " from Ratings as R" +
             " where R.TraineeCode = " + UserCode + " and R.RatedCode = " + RatedUserCode;
         cmd = CreateCommand(pStr, con);
-       
+
         try
         {
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -2631,7 +2667,7 @@ public class DBservices
             while (dr.Read())
             {
                 r.AvgTotalRate = Convert.ToSingle(dr["AvgTotalRate"]);
-                r.RatingCode= Convert.ToInt32(dr["RatingCode"]);
+                r.RatingCode = Convert.ToInt32(dr["RatingCode"]);
             }
 
             return r;

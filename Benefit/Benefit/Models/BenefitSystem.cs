@@ -137,5 +137,11 @@ namespace Benefit.Models
             return dbs.GetTraineeProfileDetails(UserCode);
         }
 
+        public void UpdateTraineeDetails(TraineeDetails td)
+        {
+            DBservices dbs = new DBservices();
+            dbs.UpdateTraineeDetails(td);
+        }
+
     }
 }
