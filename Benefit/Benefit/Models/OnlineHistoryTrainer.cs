@@ -14,6 +14,11 @@ namespace Benefit.Models
             
         }
 
+        public OnlineHistoryTrainer()
+        {
+
+        }
+
         public void InsertOnlineTrainer(OnlineHistoryTrainer o)
         {
             DBservices dbs = new DBservices();

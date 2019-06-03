@@ -24,6 +24,11 @@ namespace Benefit.Models
 
         }
 
+        public OnlineHistory()
+        {
+
+        }
+
 
     }
 }

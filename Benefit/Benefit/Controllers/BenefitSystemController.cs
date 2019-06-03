@@ -181,15 +181,22 @@ namespace Benefit.Controllers
         }
 
         [HttpGet]
-        [Route("api/CheckIfUserOnline")]
-        public bool CheckIfUserOnline(int UserCode, int IsTrainer)
+        [Route("api/CheckIfTraineeOnline")]
+        public OnlineHistoryTrainee CheckIfTraineeOnline(int UserCode)
         {
             BenefitSystem s = new BenefitSystem();
-            return s.CheckIfUserOnline(UserCode, IsTrainer);
+            return s.CheckIfTraineeOnline(UserCode);
         }
 
-       
-        
+        [HttpGet]
+        [Route("api/CheckIfTrainerOnline")]
+        public OnlineHistoryTrainer CheckIfTrainerOnline(int UserCode)
+        {
+            BenefitSystem s = new BenefitSystem();
+            return s.CheckIfTrainerOnline(UserCode);
+        }
+
+
         [HttpPost]
         [Route("api/UpdateTrainingsStatus")]
         public void UpdateTrainingsStatus()

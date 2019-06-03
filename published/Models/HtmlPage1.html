@@ -79,11 +79,11 @@
 
             //onlinehistorytrainee = {
             //    UserCode: 1,
-            //    Latitude: 32.35989,
-            //    Longitude: 34.86053,
-            //    StartTime: "2019-05-19 12:00:00.123",
-            //    EndTime: "2019-05-19 23:00:00.123",
-            //    WithTrainer: 0,
+            //    Latitude: 32.362144,
+            //    Longitude: 34.859936,
+            //    StartTime: "2019-06-02 14:00:00.123",
+            //    EndTime: "2019-06-02 23:44:00.123",
+            //    WithTrainer: 1,
             //    WithPartner: 1,
             //    GroupWithTrainer: 1,
             //    GroupWithPartners: 1
@@ -92,27 +92,27 @@
             //obj = JSON.stringify(onlinehistorytrainee);
             //console.log(obj);
             // ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
-            // ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
+            //ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
             //ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
 
             //delete from db
-            // ajaxcall("GET", "../api/DeleteNotActive", obj, success1, error);
+            // ajaxCall("GET", "../api/DeleteNotActive", obj, success1, error);
 
             //--------------------------------------------------------------------
             // ADD ONLINE TRAINER
             //--------------------------------------------------------------------
 
-            //    OnlineHistoryTrainer = {
-            //        UserCode: 4,
-            //        Latitude: "32.328673",
-            //        Longitude: "34.906768",
-            //        StartTime: "2019-03-16 09:00:29.123",
-            //        EndTime: "2019-03-16 09:30:29.123"
-            //    }
+                //OnlineHistoryTrainer = {
+                //    UserCode: 4,
+                //    Latitude: "32.328673",
+                //    Longitude: "34.906768",
+                //    StartTime: "2019-03-16 09:00:29.123",
+                //    EndTime: "2019-03-16 09:30:29.123"
+                //}
 
-            //    obj = JSON.stringify(OnlineHistoryTrainer);
-            //    console.log(obj);
-            //    ajaxCall("POST", "../api/InsertOnlineTrainer", obj, successInsertOnline, error);
+                //obj = JSON.stringify(OnlineHistoryTrainer);
+                //console.log(obj);
+                //ajaxCall("POST", "../api/InsertOnlineTrainer", obj, successInsertOnline, error);
 
 
             //--------------------------------------------------------------------
@@ -134,7 +134,7 @@
             //obj = JSON.stringify(HistoryGroupTraining);
             //console.log(obj);
             //ajaxCall("POST", "../api/InsertGroupTraining", obj, successInsertOnline, error);
-
+            //ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successGetLazy, error);
 
             //details = {
             //    UserCode: 1,
@@ -142,7 +142,7 @@
             //}
 
             //obj = JSON.stringify(details);
-            //ajaxCall("POST", "../api/JoinGroup?UserCode=4&GroupTrainingCode=6", "", success1, error);
+            //ajaxCall("POST", "../api/JoinGroup?UserCode=1&GroupTrainingCode=2", "", success1, error);
 
             //--------------------------------------------------------------------
             // check function GET LAZY TRAINEES
@@ -157,14 +157,16 @@
             //	ReciverCode: 29
             //}
             //obj = JSON.stringify(Suggestion);
-            //ajaxCall("GET", "../api/SendSuggestion?SenderCode=28&ReceiverCode=29", "", successSendSuggestion, error);
+          //  ajaxCall("GET", "../api/SendSuggestion?SenderCode=1&ReceiverCode=2", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/ReplySuggestion?SuggestionCode=1&reply="+"true", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetPendingSuggestions?UserCode=28&Sender=true", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelSuggestion?SuggestionCode=29", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureCoupleTrainings?UserCode=1", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelCoupleTraining?CoupleTrainingCode=25&UserCode=1", "", successSendSuggestion, error);
-            //ajaxCall("GET", "../api/CheckIfUserOnline?UserCode=1&IsTrainer=0", "", success1, error);
+
+            ajaxCall("GET", "../api/CheckIfTrainerOnline?UserCode=4", "", successGetLazy, error);
+            ajaxCall("GET", "../api/CheckIfTraineeOnline?UserCode=1", "", successGetLazy, error);
             //ajaxCall("POST", "../api/GoOffline?UserCode=1&IsTrainer=0", "", success1, error);
             //ajaxCall("POST", "../api/CancelGroupParticipant?GroupTrainingCode=35&UserCode=1", "", success1, error);
             //     var pnd = {
@@ -175,19 +177,20 @@
             //    }
             //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
-          //  ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
-            
+            //  ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
+
             //ajaxCall("GET", "../api/GetSuggestionCode?UserCode1=1&UserCode2=2", "", successGetLazy, error);
 
             //Rating = {
             //    TraineeCode: 1,
             //    RatedCode: 2,
-            //    AvgTotalRate:5
+            //    AvgTotalRate:3
             //}
 
             //obj = JSON.stringify(Rating);
             //ajaxCall("POST", "../api/InsertNewRating", obj, successGetLazy, error);
-            
+
+            //ajaxCall("GET", "../api/CheckActiveSuggestions?SenderCode=1&ReceiverCode=2", "", successGetLazy, error);
 
             //ParametersRate = {
             //    RatingCode: 39,
@@ -200,10 +203,36 @@
             //ajaxCall("POST", "../api/InsertParametersRate", obj, successGetLazy, error);
 
             //ajaxCall("GET", "../api/CheckIfRateExists?UserCode=1&RatedUserCode=2","" , successGetLazy, error);
-           // ajaxCall("GET", "../api/ShowProfile?UserCode=1", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/ShowProfile?UserCode=1", "", successGetLazy, error);
             //ajaxCall("GET", "../api/GetSportCategories", "", successGetLazy, error);
             //ajaxCall("GET", "../api/GetAvarageParametersRate?UserCode=2", "", successGetLazy, error);
-            ajaxCall("GET", "../api/GetTraineeProfileDetails?UserCode=1", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/GetTraineeProfileDetails?UserCode=1", "", successGetLazy, error);
+
+            //TraineeDetails = {
+            //    TraineeCode: 40,
+            //    Picture: 'stav',
+            //    SearchRadius: 4000,
+            //    MaxBudget: 4000,
+            //    PartnerGender: 'stav',
+            //    TrainerGender: 'stav',
+            //    MinPartnerAge: 4000,
+            //    MaxPartnerAge: 4000,
+            //    SportCategories: [
+            //        {
+            //            CategoryCode: 8,
+            //            Description: 'Short Run',
+            //        },
+            //        {
+            //            CategoryCode: 2,
+            //            Description: 'Jogging',
+            //        },
+            //    ]
+
+            //}
+            //obj = JSON.stringify(TraineeDetails);
+            
+            //ajaxCall("POST", "../api/UpdateTraineeDetails", obj, successGetLazy, error);
+
             // ParametersRate = {
             //    RatingCode: 1,
             //    ParameterCode: 1,
@@ -233,7 +262,7 @@
 
             //ajaxCall("POST", "../api/UpdateExistingParametersRate", obj, successGetLazy, error);
 
-            
+
 
             //ajaxCall("GET", "../api/GetMessages?ChatCode=1", "", successGetLazy, error);
 
