@@ -20,8 +20,10 @@ namespace Benefit.Models
         public float Latitude { get; set; }
         public float Longitude { get; set; }
 		public bool IsTrainer { get; set; }
+        public int Price { get; set; }
+        public float Rate { get; set; }
 
-		public SuggestionResult( int _suggestionCode, int _senderCode, int _receiverCode, int _statusCode, string _sendingTime, string _firstName, string _lastName, string _gender, int _age, string _picture, float _latitude, float _longitude, bool _isTrainer)
+        public SuggestionResult( int _suggestionCode, int _senderCode, int _receiverCode, int _statusCode, string _sendingTime, string _firstName, string _lastName, string _gender, int _age, string _picture, float _latitude, float _longitude, bool _isTrainer, int _price, float _rate)
         {
 			SuggestionCode = _suggestionCode;
 			SenderCode = _senderCode;
@@ -36,7 +38,11 @@ namespace Benefit.Models
 			Latitude = _latitude;
 			Longitude = _longitude;
 			IsTrainer = _isTrainer;
-	}
+            Price = _price;
+            Rate = _rate;
+
+
+    }
 
         public SuggestionResult()
         {

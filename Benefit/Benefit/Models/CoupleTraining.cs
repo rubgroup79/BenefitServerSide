@@ -15,10 +15,11 @@ namespace Benefit.Models
         public int PartnerAge { get; set; }
         public string PartnerPicture { get; set; }
        public int SuggestionCode { get; set; }
+        public float Rate { get; set; }
 
 
         public CoupleTraining(string _trainingTime, float _latitude, float _longitude, int _withTrainer, int _statusCode, int _price
-            , int _partnerUserCode, string _partnerFirstName, string _partnerLastName, int _partnerAge, string _partnerPicture, int _suggestionCode)
+            , int _partnerUserCode, string _partnerFirstName, string _partnerLastName, int _partnerAge, string _partnerPicture, int _suggestionCode, float _rate)
             :base(_trainingTime,  _latitude,  _longitude, _withTrainer, _statusCode, _price)
         {
             PartnerUserCode = _partnerUserCode;
@@ -27,6 +28,7 @@ namespace Benefit.Models
             PartnerAge = _partnerAge;
             PartnerPicture = _partnerPicture;
             SuggestionCode = _suggestionCode;
+            Rate = _rate;
     }
 
         public CoupleTraining() { }

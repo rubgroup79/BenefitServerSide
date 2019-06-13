@@ -72,6 +72,30 @@ namespace Benefit
                 }
 
             }
+
+            if (DateTime.Now.ToString("HH:mm tt") == "00" || DateTime.Now.ToString("HH:mm tt") == "12")
+            {
+
+                DBservices db = new DBservices();
+
+                db.DeleteNotActive();  // delets : current trainer/trainee and active groups
+                db.UpdateAllSuggestionsStatus();
+                db.UpdateTrainingsStatus();
+                List<User> ul = db.CheckMinParticipants_AllGroups();
+
+                for (int i = 0; i < ul.Count; i++)
+                {
+                    PushNotification pn = new PushNotification();
+                    pn.To = ul[i].Token;
+                    pn.Title = "Benefit";
+                    pn.Body = "Your group is canceled :(";
+                    pn.Badge = 1;
+                    this.PushNotification(pn);
+                }
+
+
+
+            }
         }
         
         public static void StartTimer()

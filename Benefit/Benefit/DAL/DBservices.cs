@@ -306,7 +306,7 @@ public class DBservices
             con.Close();
             con = connect("BenefitConnectionStringName");
 
-            selectSTR = "select distinct U.UserCode, U.FirstName, U.LastName, datediff(year,  U.DateOfBirth, getdate()) as Age, U.Gender, OHT.Latitude, OHT.Longitude, OHT.StartTime, OHT.EndTime, T.PartnerGender, U.SearchRadius, U.Picture, U.IsTrainer  " +
+            selectSTR = "select distinct U.UserCode, U.FirstName, U.LastName, datediff(year,  U.DateOfBirth, getdate()) as Age, U.Gender, OHT.Latitude, OHT.Longitude, OHT.StartTime, OHT.EndTime, T.PartnerGender, U.SearchRadius, U.Picture, U.IsTrainer, U.Rate   " +
                "from Users as U inner join Trainees as T on U.UserCode = T.TraineeCode " +
                "inner join OnlineHistoryTrainee as OHT on OHT.TraineeCode = U.UserCode " +
                "inner join CurrentOnlineTrainee as COT on COT.OnlineCode = OHT.OnlineCode " +
@@ -359,6 +359,7 @@ public class DBservices
                         rt.Picture = Convert.ToString(dr["Picture"]);
                         rt.IsTrainer = Convert.ToInt32(dr["IsTrainer"]);
                         rt.Distance = distance;
+                        rt.Rate = Convert.ToSingle(dr["Rate"]);
                         tl.Add(rt);
 
                     }
@@ -433,7 +434,7 @@ public class DBservices
 
             con.Close();
             con = connect("BenefitConnectionStringName");
-            selectSTR = "select distinct U.UserCode, U.FirstName, U.LastName, datediff(year, U.DateOfBirth, getdate()) as Age, U.Gender, OHT.Latitude, OHT.Longitude, OHT.StartTime, OHT.EndTime, U.SearchRadius, T.PersonalTrainingPrice, U.Picture, U.IsTrainer " +
+            selectSTR = "select distinct U.UserCode, U.FirstName, U.LastName, datediff(year, U.DateOfBirth, getdate()) as Age, U.Gender, OHT.Latitude, OHT.Longitude, OHT.StartTime, OHT.EndTime, U.SearchRadius, T.PersonalTrainingPrice, U.Picture, U.IsTrainer, U.Rate " +
                 "from Users as U inner join Trainers as T on U.UserCode = T.TrainerCode " +
                 "inner join OnlineHistoryTrainer as OHT on OHT.TrainerCode = U.UserCode " +
                 "inner join CurrentOnlineTrainer as COT on COT.OnlineCode = OHT.OnlineCode " +
@@ -488,6 +489,7 @@ public class DBservices
                         rt.Price = Convert.ToInt32(dr["PersonalTrainingPrice"]);
                         rt.IsTrainer = Convert.ToInt32(dr["IsTrainer"]);
                         rt.Distance = distance;
+                        rt.Rate = Convert.ToSingle(dr["Rate"]);
                         tl.Add(rt);
 
                     }
@@ -623,9 +625,10 @@ public class DBservices
             con.Close();
             con = connect("BenefitConnectionStringName");
 
-            selectSTR = "select distinct AGT.GroupTrainingCode, HGT.Latitude, HGT.Longitude, HGT.TrainingTime, HGT.MaxParticipants, HGT.CurrentParticipants, HGT.SportCategoryCode, HGT.Price, HGT.WithTrainer, HGT.CreatorCode " +
-                "from HistoryGroupTraining as HGT inner join ActiveGroupTraining as AGT on HGT.GroupTrainingCode = AGT.GroupTrainingCode " +
-                "where " + GruopWith +
+            selectSTR = "select distinct AGT.GroupTrainingCode, HGT.Latitude, HGT.Longitude, HGT.TrainingTime, HGT.MaxParticipants, HGT.CurrentParticipants, HGT.SportCategoryCode,SC.Description, HGT.Price, HGT.WithTrainer, HGT.CreatorCode " +
+                " from HistoryGroupTraining as HGT inner join ActiveGroupTraining as AGT on HGT.GroupTrainingCode = AGT.GroupTrainingCode " +
+                " inner join SportCategories as SC on SC.CategoryCode=HGT.SportCategoryCode" +
+                " where " + GruopWith +
                 " and( HGT.TrainingTime between '" + o.StartTime + "' and '" + o.EndTime + "') " +
                 " and HGT.StatusCode<>'3' " +
                 sportCategoriesStr;
@@ -666,6 +669,8 @@ public class DBservices
                         hgt.Price = Convert.ToInt32(dr["Price"]);
                         hgt.WithTrainer = Convert.ToInt32(dr["WithTrainer"]);
                         hgt.CreatorCode = Convert.ToInt32(dr["CreatorCode"]);
+                        hgt.SportCategory = Convert.ToString(dr["Description"]);
+                        hgt.Distance = distance;
                         gtl.Add(hgt);
                     }
 
@@ -1119,7 +1124,7 @@ public class DBservices
 
         SqlConnection con;
         SqlCommand cmd;
-
+        String pStr; 
         try
         {
             con = connect("BenefitConnectionStringName");
@@ -1132,7 +1137,12 @@ public class DBservices
 
         try
         {
-            String pStr = BuildInsertGroupParticipantsCommand(UserCode, GroupTrainingCode);
+            pStr = "delete GroupParticipants where UserCode=" + UserCode + " and GroupTrainingCode=" + GroupTrainingCode;
+            cmd = CreateCommand(pStr, con);
+            cmd.ExecuteNonQuery();
+            con.Close();
+            con = connect("BenefitConnectionStringName");
+            pStr = BuildInsertGroupParticipantsCommand(UserCode, GroupTrainingCode);
             cmd = CreateCommand(pStr, con);
             cmd.ExecuteNonQuery();
             UpdateNumOfParticipants(1, GroupTrainingCode);
@@ -1405,17 +1415,23 @@ public class DBservices
         {
             con = connect("BenefitConnectionStringName");
             String selectSTR = "Update CoupleTraining set StatusCode=2 where CoupleTrainingCode='" + CoupleTrainingCode + "'" +
-                " select case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end as PartnerCode" +
+                " select CTS.SuggestionCode, case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end as PartnerCode" +
                 " from CoupleTraining as CT inner join CoupleTrainingSuggestions as CTS on CT.SuggestionCode = CTS.SuggestionCode" +
                 " Where CT.CoupleTrainingCode = " + CoupleTrainingCode;
             cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
-
+            
+            int SuggestionCode=0;
             while (dr.Read())
             {
+                SuggestionCode = Convert.ToInt32(dr["SuggestionCode"]);
                 PartnerCode = Convert.ToInt32(dr["PartnerCode"]);
             }
-
+            con.Close();
+            con = connect("BenefitConnectionStringName");
+            selectSTR = "Update CoupleTrainingSuggestions set StatusCode=2 where SuggestionCode=" + SuggestionCode;
+            cmd = new SqlCommand(selectSTR, con);
+            cmd.ExecuteNonQuery();
             return PartnerCode;
         }
 
@@ -1433,24 +1449,39 @@ public class DBservices
         }
     }
 
-    public void CancelGroupParticipant(int GroupTrainingCode, int UserCode)
+    public List<User> CancelGroupParticipant(int GroupTrainingCode, int UserCode)
     {
         UpdateNumOfParticipants(-1, GroupTrainingCode);
         SqlConnection con = null;
         SqlCommand cmd;
+        String selectSTR;
+        List<User> ul = new List<User>();
 
         try
         {
+
             con = connect("BenefitConnectionStringName");
             // update status for the participant
-            String selectSTR = "Update GroupParticipants set StatusCode=2" +
-                " where UserCode=" + UserCode + " and GroupTrainingCode= " + GroupTrainingCode;
+             selectSTR = "Update GroupParticipants set StatusCode=2" +
+                " where UserCode=" + UserCode + " and GroupTrainingCode= " + GroupTrainingCode+
+                " Select CreatorCode from HistoryGroupTraining HGT" +
+                " where GroupTrainingCode= " + GroupTrainingCode; 
             cmd = new SqlCommand(selectSTR, con);
-            cmd.ExecuteNonQuery();
-            //  check if current < min and its 15m befor the training 
-            CheckNumOfParticipants(GroupTrainingCode);
-
-
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            while (dr.Read())   //if the user who canceled is the creator the group is canceled
+            {
+                if (Convert.ToInt32(dr["CreatorCode"]) == UserCode)
+                {
+                    ul = CancelGroupTraining(GroupTrainingCode);
+                  
+                }
+                else
+                {
+                    ul= CheckNumOfParticipants(GroupTrainingCode);
+                }//check if current < min and its 15m befor the training 
+            }
+            return ul;
+            
         }
 
         catch (Exception ex)
@@ -1467,19 +1498,19 @@ public class DBservices
         }
     }
 
-    public void CheckNumOfParticipants(int GroupTrainingCode)
+    public List<User> CheckNumOfParticipants(int GroupTrainingCode)
     {
         SqlConnection con = null;
         SqlCommand cmd;
-
+        List<User> ul = new List<User>();
         try
         {
             con = connect("BenefitConnectionStringName");
             // update status for the participant and then check if current < min and its 15m befor the training 
             String selectSTR =
                 " select HGT.GroupTrainingCode from HistoryGroupTraining HGT" +
-                " where (HGT.GroupTrainingCode = " + GroupTrainingCode + ") and(HGT.CurrentParticipants < HGT.MinParticipants) " +
-                " and(DATEDIFF(MINUTE, HGT.TrainingTime, getdate()) <= 15) and(HGT.StatusCode = 1) ";
+                " where (HGT.GroupTrainingCode = " + GroupTrainingCode + ") and (HGT.CurrentParticipants < HGT.MinParticipants) " +
+                " and (DATEDIFF(MINUTE, getdate(), HGT.TrainingTime) <= 15) and(HGT.StatusCode = 1) ";
             // if it returns a value, cancel group 
             cmd = new SqlCommand(selectSTR, con);
 
@@ -1488,8 +1519,10 @@ public class DBservices
             if (dr.Read())
             {
                 // int group = Convert.ToInt32(dr["GroupTrainingCode"]);
-                CancelGroupTraining(GroupTrainingCode);
+                return CancelGroupTraining(GroupTrainingCode);
+              
             }
+            else return ul;
 
 
         }
@@ -1947,25 +1980,29 @@ public class DBservices
         try
         {
             con = connect("BenefitConnectionStringName");
-            selectSTR = "select distinct CTS.SuggestionCode, CTS.ReceiverCode, CTS.StatusCode, CTS.SendingTime, U.FirstName, U.LastName, U.Gender, U.Picture, DATEDIFF(year, U.DateOfBirth, getdate()) as Age, U.IsTrainer, RES.Latitude, RES.Longitude" +
+            selectSTR = "select distinct CTS.SuggestionCode, CTS.ReceiverCode, CTS.StatusCode, CTS.SendingTime, U.FirstName, U.LastName, U.Gender, U.Picture, DATEDIFF(year, U.DateOfBirth, getdate()) as Age, U.IsTrainer, RES.Latitude, RES.Longitude, U.Rate, RES.Price " +
                 " from CoupleTrainingSuggestions CTS inner join Users U on CTS.ReceiverCode = U.UserCode" +
                 " inner join" +
-                " (select OHT1.TraineeCode as UserCode, OHT1.Latitude, OHT1.Longitude" +
+                " (select OHT1.TraineeCode as UserCode, OHT1.Latitude, OHT1.Longitude , '0' as Price" +
                 " from OnlineHistoryTrainee OHT1 inner join CurrentOnlineTrainee CO1 on CO1.OnlineCode = OHT1.OnlineCode" +
                 " UNION" +
-                " select OHT1.TrainerCode as UserCode, OHT1.Latitude, OHT1.Longitude" +
+                " select OHT1.TrainerCode as UserCode, OHT1.Latitude, OHT1.Longitude, T.PersonalTrainingPrice as Price" +
                 " from OnlineHistoryTrainer OHT1 inner join CurrentOnlineTrainer CO1 on CO1.OnlineCode = OHT1.OnlineCode" +
+                " inner join Trainers as T on T.TrainerCode = OHT1.TrainerCode" +
                 " ) as RES on RES.UserCode = CTS.ReceiverCode" +
-                " where((CTS.SenderCode = " + UserCode + ") and(CTS.StatusCode = " + IsApprovedStr + "))";
+                 " where((CTS.SenderCode = " + UserCode + ") and(CTS.StatusCode = " + IsApprovedStr + ")" +
+                 " and(CTS.SuggestionCode not in" +
+                 " (select CT.SuggestionCode from CoupleTraining CT  )))";
 
             cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
 
             List<SuggestionResult> srl = new List<SuggestionResult>();
-
+           
 
             while (dr.Read())
             {
+                
                 SuggestionResult sr = new SuggestionResult();
                 sr.SuggestionCode = Convert.ToInt32(dr["SuggestionCode"]);
                 sr.ReceiverCode = Convert.ToInt32(dr["ReceiverCode"]);
@@ -1980,18 +2017,21 @@ public class DBservices
                 sr.IsTrainer = Convert.ToBoolean(dr["IsTrainer"]);
                 sr.Latitude = Convert.ToSingle(dr["Latitude"]);
                 sr.Longitude = Convert.ToSingle(dr["Longitude"]);
+                sr.Rate = Convert.ToSingle(dr["Rate"]);
+                sr.Price = Convert.ToInt32(dr["Price"]);
                 srl.Add(sr);
             }
             con.Close();
             con = connect("BenefitConnectionStringName");
 
-            selectSTR = "select distinct CTS.SuggestionCode, CTS.SenderCode, CTS.StatusCode, CTS.SendingTime, U.FirstName, U.LastName, U.Gender, U.Picture, DATEDIFF(year, U.DateOfBirth, getdate()) as Age, U.IsTrainer, OHT.Latitude, OHT.Longitude" +
+            selectSTR = "select distinct CTS.SuggestionCode, CTS.SenderCode, CTS.StatusCode, CTS.SendingTime, U.FirstName, U.LastName, U.Gender, U.Picture, DATEDIFF(year, U.DateOfBirth, getdate()) as Age, U.IsTrainer, OHT.Latitude, OHT.Longitude, U.Rate" +
                 " from CoupleTrainingSuggestions CTS inner" +
                 " join Users U on CTS.SenderCode = U.UserCode" +
-                " inner" +
-                " join OnlineHistoryTrainee OHT on OHT.TraineeCode = CTS.SenderCode inner" +
-                " join CurrentOnlineTrainee CO on CO.OnlineCode = OHT.OnlineCode" +
-                " where CTS.ReceiverCode = " + UserCode + " and CTS.StatusCode = " + IsApprovedStr + "";
+                " inner join OnlineHistoryTrainee OHT on OHT.TraineeCode = CTS.SenderCode " +
+                " inner join CurrentOnlineTrainee CO on CO.OnlineCode = OHT.OnlineCode" +
+                " where((CTS.ReceiverCode = " + UserCode + ") and(CTS.StatusCode = " + IsApprovedStr + ")" +
+                 " and(CTS.SuggestionCode not in" +
+                 " (select CT.SuggestionCode from CoupleTraining CT  )))";
 
             cmd = new SqlCommand(selectSTR, con);
              dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -2008,10 +2048,11 @@ public class DBservices
                 sr.LastName = Convert.ToString(dr["LastName"]);
                 sr.Gender = Convert.ToString(dr["Gender"]);
                 sr.Age = Convert.ToInt32(dr["Age"]);
-                sr.Picture = "'" + Convert.ToString(dr["Picture"]) + "'";
+                sr.Picture =  Convert.ToString(dr["Picture"]);
                 sr.IsTrainer = Convert.ToBoolean(dr["IsTrainer"]);
                 sr.Latitude = Convert.ToSingle(dr["Latitude"]);
                 sr.Longitude = Convert.ToSingle(dr["Longitude"]);
+                sr.Rate = Convert.ToSingle(dr["Rate"]);
 
                 srl.Add(sr);
             }
@@ -2038,6 +2079,8 @@ public class DBservices
 
     }
 
+
+
     public List<CoupleTraining> GetFutureCoupleTrainings(int UserCode)
     {
         SqlConnection con = null;
@@ -2046,10 +2089,9 @@ public class DBservices
         {
             con = connect("BenefitConnectionStringName");
 
-            String selectSTR = "select  CT.CoupleTrainingCode, CT.Latitude,CT.Longitude,CT.TrainingTime,CT.WithTrainer, case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end as PartnerCode, DATEDIFF(year, U.DateOfBirth, getdate()) as Age, U.FirstName, U.LastName, U.Picture, T.PersonalTrainingPrice" +
+            String selectSTR = "select  CT.CoupleTrainingCode, CT.Latitude,CT.Longitude,CT.TrainingTime,CT.WithTrainer, case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end as PartnerCode, DATEDIFF(year, U.DateOfBirth, getdate()) as Age, U.FirstName, U.LastName, U.Picture, U.Rate, CT.Price" +
                 " from CoupleTraining as CT inner join CoupleTrainingSuggestions AS CTS on CT.SuggestionCode = CTS.SuggestionCode" +
                 " inner join Users as U on U.UserCode = case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end" +
-                " left outer join Trainers as T on T.TrainerCode = CTS.ReceiverCode" +
                 " where(CTS.SenderCode = " + UserCode + " or CTS.ReceiverCode = " + UserCode + ") and(datediff(minute, CT.TrainingTime, getdate())  < 60) and CT.StatusCode = 1";
 
             cmd = new SqlCommand(selectSTR, con);
@@ -2066,10 +2108,12 @@ public class DBservices
                 string _long = Convert.ToString(dr["Longitude"]);
                 c.Longitude = float.Parse(_long);
                 c.WithTrainer = Convert.ToInt32(dr["WithTrainer"]);
+                c.PartnerUserCode= Convert.ToInt32(dr["PartnerCode"]);
                 c.PartnerFirstName = Convert.ToString(dr["FirstName"]);
                 c.PartnerLastName = Convert.ToString(dr["LastName"]);
                 c.PartnerAge = Convert.ToInt32(dr["Age"]);
                 c.PartnerPicture = Convert.ToString(dr["Picture"]);
+                c.Rate = Convert.ToSingle(dr["Rate"]);
                 if (c.WithTrainer == 1) c.Price = Convert.ToInt32(dr["PersonalTrainingPrice"]);
 
                 ctl.Add(c);
@@ -2101,7 +2145,7 @@ public class DBservices
         {
             con = connect("BenefitConnectionStringName");
 
-            String selectSTR = "select HGT.GroupTrainingCode, HGT.TrainingTime, HGT.Latitude, HGT.Longitude, HGT.WithTrainer, SC.Description as SportCategory, HGT.Price" +
+            String selectSTR = "select HGT.GroupTrainingCode, HGT.TrainingTime, HGT.Latitude, HGT.Longitude, HGT.WithTrainer, SC.Description as SportCategory, HGT.Price, HGT.CreatorCode" +
                 " from HistoryGroupTraining as HGT inner join ActiveGroupTraining as AGT on AGT.GroupTrainingCode = HGT.GroupTrainingCode" +
                 " inner join GroupParticipants as GP on GP.GroupTrainingCode = HGT.GroupTrainingCode" +
                 " inner join SportCategories SC on HGT.SportCategoryCode = SC.CategoryCode" +
@@ -2125,6 +2169,7 @@ public class DBservices
                 hgt.WithTrainer = Convert.ToInt32(dr["WithTrainer"]);
                 hgt.SportCategory = Convert.ToString(dr["SportCategory"]);
                 hgt.Price = Convert.ToInt32(dr["Price"]);
+                hgt.CreatorCode = Convert.ToInt32(dr["CreatorCode"]);
                 hgtl.Add(hgt);
             }
 
@@ -2692,6 +2737,58 @@ public class DBservices
 
     }
 
+    public int OpenChat(int UserCode1, int UserCode2)
+    {
+        SqlConnection con;
+        SqlCommand cmd;
+        String pStr = null;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        pStr = "select C.ChatCode" +
+            " from Chats as C" +
+            " where (C.UserCode1 =" +UserCode1+ "and C.UserCode2 = " + UserCode2 + ") or(C.UserCode1 = " + UserCode2 + " and C.UserCode2 = " + UserCode1 + ")";
+        cmd = CreateCommand(pStr, con);
+
+        try
+        {
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            if (dr.Read())
+            {
+                return Convert.ToInt32(dr["ChatCode"]);
+            }
+
+            else
+            {
+                con.Close();
+                con = connect("BenefitConnectionStringName");
+                pStr = BuildInsertNewChat(UserCode1, UserCode2);
+                cmd = CreateCommand(pStr, con);
+                return Convert.ToInt32(cmd.ExecuteScalar());
+            }
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
     public List<Chat> GetAllChats(int UserCode)
     {
         SqlConnection con = null;
@@ -2933,12 +3030,30 @@ public class DBservices
     {
         SqlConnection con;
         SqlCommand cmd;
-
+        String pStr;
 
         con = connect("BenefitConnectionStringName");
         try
         {
-            String pStr = BuildInsertCoupleTrainingCommand(ct);
+            if (ct.WithTrainer == 1)
+            {
+                pStr = "select T.PersonalTrainingPrice" +
+                      " from Trainers T inner join CoupleTrainingSuggestions CTS" +
+                      " on CTS.ReceiverCode = T.TrainerCode" +
+                      " Where CTS.SuggestionCode = " + ct.SuggestionCode;
+               
+                cmd = new SqlCommand(pStr, con);
+                SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+             
+                while (dr.Read())
+                {
+                    ct.Price = Convert.ToInt32(dr["PersonalTrainingPrice"]);
+                }
+                    con.Close();
+            }
+
+            pStr = BuildInsertCoupleTrainingCommand(ct);
             cmd = CreateCommand(pStr, con);
             cmd.ExecuteNonQuery();
         }
@@ -3034,6 +3149,96 @@ public class DBservices
 
     }
 
+    // for process 
+    public void UpdateAllSuggestionsStatus()
+    {
+
+        SqlConnection con = null;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "UPDATE CoupleTrainingSuggestions " +
+                "SET StatusCode = 7 " +
+                "where (CoupleTrainingSuggestions.SenderCode not in " +
+                "(select OHT.TraineeCode " +
+                "from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C  on OHT.OnlineCode = C.OnlineCode) " +
+                "or (CoupleTrainingSuggestions.ReceiverCode not in " +
+                "(select OHT.TraineeCode from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C on OHT.OnlineCode = C.OnlineCode) " +
+                "and CoupleTrainingSuggestions.ReceiverCode not in " +
+                "(select OHT.TrainerCode " +
+                "from OnlineHistoryTrainer as OHT inner join CurrentOnlineTrainer as C on OHT.OnlineCode = C.OnlineCode)))";
+
+
+            cmd = new SqlCommand(selectSTR, con);
+            //int CurrentParticipants = Convert.ToInt32(cmd.ExecuteScalar());
+            cmd.ExecuteNonQuery();
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
+    // called by a proccess to check if its 15m befor training 
+    //returns list of users to sent them push 
+    public List<User> CheckMinParticipants_AllGroups()
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+            // check if current < min and its 15m befor the training 
+            String selectSTR =
+                " select HGT.GroupTrainingCode from HistoryGroupTraining HGT" +
+                " where (HGT.CurrentParticipants < HGT.MinParticipants) " +
+                " and(DATEDIFF(MINUTE, HGT.TrainingTime, getdate()) <= 15) and(HGT.StatusCode = 1) ";
+            // if it returns a value, cancel group 
+            cmd = new SqlCommand(selectSTR, con);
+
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            // if the group is less then min & 15m befor training 
+            List<User> ul = new List<User>();
+            int counter = 0;
+            while (dr.Read())
+            {
+                counter++;
+                List<User> gl = new List<User>();
+                int GroupTrainingCode = Convert.ToInt32(dr["GroupTrainingCode"]);
+                if (counter == 1) ul = CancelGroupTraining(GroupTrainingCode);
+                else gl = CancelGroupTraining(GroupTrainingCode);
+                ul.AddRange(gl);
+            }
+            return ul;
+
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
     //--------------------------------------------------------------------
     // Build the Insert command String
     //--------------------------------------------------------------------
@@ -3213,6 +3418,18 @@ public class DBservices
         command = prefix + sb.ToString();
         return command;
     }
+
+    private String BuildInsertNewChat(int UserCode1, int UserCode2)
+    {
+        String command;
+        StringBuilder sb = new StringBuilder();
+
+        sb.AppendFormat(" Values({0},{1})", UserCode1.ToString(), UserCode2.ToString());
+        String prefix = "INSERT INTO Chats (UserCode1, UserCode2) output INSERTED.ChatCode ";
+        command = prefix + sb.ToString();
+        return command;
+    }
+
 
 
     //---------------------------------------------------------------------------------

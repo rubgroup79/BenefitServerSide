@@ -149,5 +149,12 @@ namespace Benefit.Models
             dbs.UpdateTraineeDetails(td);
         }
 
+
+        public int OpenChat(int UserCode1, int UserCode2)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.OpenChat(UserCode1, UserCode2);
+        }
+
     }
 }

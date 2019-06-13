@@ -290,6 +290,14 @@ namespace Benefit.Controllers
             b.UpdateTraineeDetails(td);
         }
 
+        [HttpPost]
+        [Route("api/OpenChat")]
+        public int OpenChat(int UserCode1, int UserCode2)
+        {
+            BenefitSystem b = new BenefitSystem();
+            return b.OpenChat(UserCode1, UserCode2);
+        }
+
     }
 
 

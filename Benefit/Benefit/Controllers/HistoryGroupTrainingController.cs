@@ -34,10 +34,10 @@ namespace Benefit.Controllers
         
         [HttpPost]
         [Route("api/CancelGroupParticipant")]
-        public void CancelGroupParticipant(int GroupTrainingCode, int UserCode)
+        public List<User> CancelGroupParticipant(int GroupTrainingCode, int UserCode)
         {
             HistoryGroupTraining hgt = new HistoryGroupTraining();
-            hgt.CancelGroupParticipant(GroupTrainingCode, UserCode);
+           return hgt.CancelGroupParticipant(GroupTrainingCode, UserCode);
         }
 
         

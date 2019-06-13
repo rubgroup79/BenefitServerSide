@@ -20,8 +20,9 @@ namespace Benefit.Models
         public int Price { get; set; }
         public int IsTrainer { get; set; }
         public double Distance { get; set; }
+        public float Rate { get; set; }
 
-        public Result( int _userCode, string _firstName, string _lastName, string _gender, int _age, float _latitude, float _longitude, string _startTime, string _endTime, string _picture, int _price, int _isTrainer, double _distance)
+        public Result( int _userCode, string _firstName, string _lastName, string _gender, int _age, float _latitude, float _longitude, string _startTime, string _endTime, string _picture, int _price, int _isTrainer, double _distance, float _rate)
        
         {
             UserCode = _userCode;
@@ -37,6 +38,7 @@ namespace Benefit.Models
             Price = _price;
             IsTrainer = _isTrainer;
             Distance = _distance;
+            Rate = _rate;
     }
 
         public Result()
