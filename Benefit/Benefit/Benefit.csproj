@@ -205,6 +205,7 @@
     <Compile Include="Models\Chat.cs" />
     <Compile Include="Models\CurrentOnlineTrainee.cs" />
     <Compile Include="Models\OnlineHistory.cs" />
+    <Compile Include="Models\TrainerDetails.cs" />
     <Compile Include="Models\TraineeDetails.cs" />
     <Compile Include="Models\Statuses.cs" />
     <Compile Include="Models\SuggestionResult.cs" />

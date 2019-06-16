@@ -79,7 +79,7 @@ namespace Benefit
                 DBservices db = new DBservices();
 
                 db.DeleteNotActive();  // delets : current trainer/trainee and active groups
-                db.UpdateAllSuggestionsStatus();
+                db.UpdateSuggestionsStatus();
                 db.UpdateTrainingsStatus();
                 List<User> ul = db.CheckMinParticipants_AllGroups();
 

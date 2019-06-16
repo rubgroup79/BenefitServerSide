@@ -134,6 +134,7 @@
             //obj = JSON.stringify(HistoryGroupTraining);
             //console.log(obj);
             //ajaxCall("POST", "../api/InsertGroupTraining", obj, successInsertOnline, error);
+            ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successGetLazy, error);
             //ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successGetLazy, error);
 
             //details = {
@@ -142,7 +143,7 @@
             //}
 
             //obj = JSON.stringify(details);
-            ajaxCall("POST", "../api/JoinGroup?UserCode=1&GroupTrainingCode=54", "", success1, error);
+           // ajaxCall("POST", "../api/JoinGroup?UserCode=1&GroupTrainingCode=54", "", success1, error);
 
             //--------------------------------------------------------------------
             // check function GET LAZY TRAINEES
@@ -168,7 +169,7 @@
             //ajaxCall("GET", "../api/CheckIfTrainerOnline?UserCode=4", "", successGetLazy, error);
             //ajaxCall("GET", "../api/CheckIfTraineeOnline?UserCode=1", "", successGetLazy, error);
            // ajaxCall("POST", "../api/OpenChat?UserCode1=1&UserCode2=5", "", successGetLazy, error);
-            ajaxCall("POST", "../api/GoOffline?UserCode=3&IsTrainer=0", "", success1, error);
+            //ajaxCall("POST", "../api/GoOffline?UserCode=3&IsTrainer=0", "", success1, error);
             //ajaxCall("POST", "../api/CancelGroupParticipant?GroupTrainingCode=54&UserCode=1", "", successSendSuggestion, error);
             //     var pnd = {
             //         to: "ExponentPushToken[dADTjNJK3uxJLtuS24EOZN]",

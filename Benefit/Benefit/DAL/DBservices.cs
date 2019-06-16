@@ -1182,7 +1182,7 @@ public class DBservices
 
     public List<SuggestionResult> GetSuggestions(int UserCode, bool IsApproved)
     {
-        UpdateSuggestionsStatus(UserCode);
+        UpdateSuggestionsStatus();
         SqlConnection con = null;
         SqlCommand cmd;
         String selectSTR = null;
@@ -1740,53 +1740,54 @@ public class DBservices
         }
     }
 
-    //קורה בכל פעם שמציגים הצעות
-    //proccess
-    public void UpdateSuggestionsStatus(int UserCode)
-    {
+    //public void UpdateSuggestionsStatus(int UserCode)
+    //{
 
-        SqlConnection con = null;
-        SqlCommand cmd;
+    //    SqlConnection con = null;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("BenefitConnectionStringName");
+    //    try
+    //    {
+    //        con = connect("BenefitConnectionStringName");
 
-            String selectSTR = "UPDATE CoupleTrainingSuggestions " +
-                "SET StatusCode = 7 " +
-                "where(CoupleTrainingSuggestions.SenderCode = " + UserCode + " or CoupleTrainingSuggestions.ReceiverCode = " + UserCode + ") " +
-                "and(CoupleTrainingSuggestions.SenderCode not in " +
-                "(select OHT.TraineeCode " +
-                "from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C  on OHT.OnlineCode = C.OnlineCode) " +
-                "or(CoupleTrainingSuggestions.ReceiverCode not in " +
-                "(select OHT.TraineeCode from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C on OHT.OnlineCode = C.OnlineCode) " +
-                "and CoupleTrainingSuggestions.ReceiverCode not in " +
-                "(select OHT.TrainerCode " +
-                "from OnlineHistoryTrainer as OHT inner join CurrentOnlineTrainer as C on OHT.OnlineCode = C.OnlineCode)))";
+    //        String selectSTR = "UPDATE CoupleTrainingSuggestions " +
+    //            "SET StatusCode = 7 " +
+    //            "where(CoupleTrainingSuggestions.SenderCode = " + UserCode + " or CoupleTrainingSuggestions.ReceiverCode = " + UserCode + ") " +
+    //            "and(CoupleTrainingSuggestions.SenderCode not in " +
+    //            "(select OHT.TraineeCode " +
+    //            "from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C  on OHT.OnlineCode = C.OnlineCode) " +
+    //            "or(CoupleTrainingSuggestions.ReceiverCode not in " +
+    //            "(select OHT.TraineeCode from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C on OHT.OnlineCode = C.OnlineCode) " +
+    //            "and CoupleTrainingSuggestions.ReceiverCode not in " +
+    //            "(select OHT.TrainerCode " +
+    //            "from OnlineHistoryTrainer as OHT inner join CurrentOnlineTrainer as C on OHT.OnlineCode = C.OnlineCode)))";
 
 
-            cmd = new SqlCommand(selectSTR, con);
-            //int CurrentParticipants = Convert.ToInt32(cmd.ExecuteScalar());
-            cmd.ExecuteNonQuery();
-        }
+    //        cmd = new SqlCommand(selectSTR, con);
+    //        //int CurrentParticipants = Convert.ToInt32(cmd.ExecuteScalar());
+    //        cmd.ExecuteNonQuery();
+    //    }
 
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
+    //    catch (Exception ex)
+    //    {
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
-        }
-    }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            con.Close();
+    //        }
+    //    }
+    //}
 
-    // קורה בשליחת הצעה 
-    //  בודקת האם יש כבר הצעה מאושרת או ממתינה לאישור או אימון קיים עבור אותם 2 משתשמשים
-    // מחזירה סטרינג שמוצג למשתמש 
+
+
+   // קורה בשליחת הצעה
+   //  בודקת האם יש כבר הצעה מאושרת או ממתינה לאישור או אימון קיים עבור אותם 2 משתשמשים
+  //  מחזירה סטרינג שמוצג למשתמש
+
     public string CheckActiveSuggestions(int SenderCode, int ReceiverCode)
     {
         SqlConnection con = null;
@@ -1850,6 +1851,41 @@ public class DBservices
             }
         }
 
+    }
+
+    // updates all suggestions to status 7 (passed) if it was sent yesterday
+    // called in get suggestions 
+    // and in proccess
+    public void UpdateSuggestionsStatus()
+    {
+
+        SqlConnection con = null;
+        SqlCommand cmd;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "update CoupleTrainingSuggestions" +
+                " set StatusCode = 7" +
+                " where DATEDIFF(day, SendingTime, getDate()) > 0";
+
+            cmd = new SqlCommand(selectSTR, con);
+            cmd.ExecuteNonQuery();
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
     }
 
     public int GetSuggestionCode(int UserCode1, int UserCode2)
@@ -2973,12 +3009,11 @@ public class DBservices
     //--------------------------------------------------------------------------------------------------
     // Procceses - clean DB and change statuses
     //--------------------------------------------------------------------------------------------------
-
+    
     // הפונקציה רצה על טבלת האונליין ומוחקת את מי שזמן סיום הפעילות שלו חלף
-    // לעשות את זה בפרוסס
     public void DeleteNotActive()
     {
-
+        
         SqlConnection con = null;
 
         SqlCommand cmd;
@@ -3052,49 +3087,50 @@ public class DBservices
         }
     }
 
-    public void UpdateAllSuggestionsStatus()
-    {
+    //public void UpdateAllSuggestionsStatus()
+    //{
 
-        SqlConnection con = null;
-        SqlCommand cmd;
+    //    SqlConnection con = null;
+    //    SqlCommand cmd;
 
-        try
-        {
-            con = connect("BenefitConnectionStringName");
+    //    try
+    //    {
+    //        con = connect("BenefitConnectionStringName");
 
-            String selectSTR = "UPDATE CoupleTrainingSuggestions " +
-                "SET StatusCode = 7 " +
-                "where (CoupleTrainingSuggestions.SenderCode not in " +
-                "(select OHT.TraineeCode " +
-                "from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C  on OHT.OnlineCode = C.OnlineCode) " +
-                "or (CoupleTrainingSuggestions.ReceiverCode not in " +
-                "(select OHT.TraineeCode from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C on OHT.OnlineCode = C.OnlineCode) " +
-                "and CoupleTrainingSuggestions.ReceiverCode not in " +
-                "(select OHT.TrainerCode " +
-                "from OnlineHistoryTrainer as OHT inner join CurrentOnlineTrainer as C on OHT.OnlineCode = C.OnlineCode)))";
+    //        String selectSTR = "UPDATE CoupleTrainingSuggestions " +
+    //            "SET StatusCode = 7 " +
+    //            "where (CoupleTrainingSuggestions.SenderCode not in " +
+    //            "(select OHT.TraineeCode " +
+    //            "from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C  on OHT.OnlineCode = C.OnlineCode) " +
+    //            "or (CoupleTrainingSuggestions.ReceiverCode not in " +
+    //            "(select OHT.TraineeCode from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as C on OHT.OnlineCode = C.OnlineCode) " +
+    //            "and CoupleTrainingSuggestions.ReceiverCode not in " +
+    //            "(select OHT.TrainerCode " +
+    //            "from OnlineHistoryTrainer as OHT inner join CurrentOnlineTrainer as C on OHT.OnlineCode = C.OnlineCode)))";
 
 
-            cmd = new SqlCommand(selectSTR, con);
-            //int CurrentParticipants = Convert.ToInt32(cmd.ExecuteScalar());
-            cmd.ExecuteNonQuery();
-        }
+    //        cmd = new SqlCommand(selectSTR, con);
+    //        //int CurrentParticipants = Convert.ToInt32(cmd.ExecuteScalar());
+    //        cmd.ExecuteNonQuery();
+    //    }
 
-        catch (Exception ex)
-        {
-            throw (ex);
-        }
+    //    catch (Exception ex)
+    //    {
+    //        throw (ex);
+    //    }
 
-        finally
-        {
-            if (con != null)
-            {
-                con.Close();
-            }
-        }
-    }
+    //    finally
+    //    {
+    //        if (con != null)
+    //        {
+    //            con.Close();
+    //        }
+    //    }
+    //}
 
     // called by a proccess to check if its 15m befor training 
     //returns list of users to sent them push 
+
     public List<User> CheckMinParticipants_AllGroups()
     {
         SqlConnection con = null;
