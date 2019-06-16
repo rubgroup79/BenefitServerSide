@@ -2079,7 +2079,7 @@ public class DBservices
 
     }
 
-
+    
 
     public List<CoupleTraining> GetFutureCoupleTrainings(int UserCode)
     {
@@ -2089,10 +2089,10 @@ public class DBservices
         {
             con = connect("BenefitConnectionStringName");
 
-            String selectSTR = "select  CT.CoupleTrainingCode, CT.Latitude,CT.Longitude,CT.TrainingTime,CT.WithTrainer, case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end as PartnerCode, DATEDIFF(year, U.DateOfBirth, getdate()) as Age, U.FirstName, U.LastName, U.Picture, U.Rate, CT.Price" +
+            String selectSTR = "select  CT.CoupleTrainingCode, CT.Latitude,CT.Longitude,CT.TrainingTime,CT.WithTrainer, case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end as PartnerCode, DATEDIFF(year, U.DateOfBirth, getdate()) as Age, U.FirstName, U.LastName, U.Picture, U.Rate, CT.Price, CT.StatusCode" +
                 " from CoupleTraining as CT inner join CoupleTrainingSuggestions AS CTS on CT.SuggestionCode = CTS.SuggestionCode" +
                 " inner join Users as U on U.UserCode = case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end" +
-                " where(CTS.SenderCode = " + UserCode + " or CTS.ReceiverCode = " + UserCode + ") and(datediff(minute, CT.TrainingTime, getdate())  < 60) and CT.StatusCode = 1";
+                " where(CTS.SenderCode = " + UserCode + " or CTS.ReceiverCode = " + UserCode + ") and(datediff(minute, CT.TrainingTime, getdate())  < 60) and (CT.StatusCode = 1 or CT.StatusCode=2)";
 
             cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -2114,7 +2114,8 @@ public class DBservices
                 c.PartnerAge = Convert.ToInt32(dr["Age"]);
                 c.PartnerPicture = Convert.ToString(dr["Picture"]);
                 c.Rate = Convert.ToSingle(dr["Rate"]);
-                if (c.WithTrainer == 1) c.Price = Convert.ToInt32(dr["PersonalTrainingPrice"]);
+                if (c.WithTrainer == 1) c.Price = Convert.ToInt32(dr["Price"]);
+                c.StatusCode= Convert.ToInt32(dr["StatusCode"]);
 
                 ctl.Add(c);
             }
@@ -2145,13 +2146,14 @@ public class DBservices
         {
             con = connect("BenefitConnectionStringName");
 
-            String selectSTR = "select HGT.GroupTrainingCode, HGT.TrainingTime, HGT.Latitude, HGT.Longitude, HGT.WithTrainer, SC.Description as SportCategory, HGT.Price, HGT.CreatorCode" +
-                " from HistoryGroupTraining as HGT inner join ActiveGroupTraining as AGT on AGT.GroupTrainingCode = HGT.GroupTrainingCode" +
-                " inner join GroupParticipants as GP on GP.GroupTrainingCode = HGT.GroupTrainingCode" +
-                " inner join SportCategories SC on HGT.SportCategoryCode = SC.CategoryCode" +
-                " where GP.UserCode = " + UserCode +
-                " and GP.StatusCode = 1" +
-                " and HGT.StatusCode = 1";
+            String selectSTR = "select HGT.GroupTrainingCode, HGT.TrainingTime, HGT.Latitude, HGT.Longitude, HGT.WithTrainer, SC.Description as SportCategory, HGT.Price, HGT.CreatorCode, HGT.StatusCode" +
+                 " from HistoryGroupTraining as HGT" +
+                 " inner join GroupParticipants as GP on GP.GroupTrainingCode = HGT.GroupTrainingCode" +
+                 " inner join SportCategories SC on HGT.SportCategoryCode = SC.CategoryCode" +
+                 " where GP.UserCode = " + UserCode +
+                 " and GP.StatusCode = 1" +
+                 " and(HGT.StatusCode = 1 OR HGT.StatusCode = 2)" +
+                 " and(datediff(minute, HGT.TrainingTime, getdate()) < 60)";
 
             cmd = new SqlCommand(selectSTR, con);
             SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
@@ -3190,6 +3192,66 @@ public class DBservices
             }
         }
     }
+
+
+    public bool checkForCloseTrainings(int UserCode, string TrainingTime)
+    {
+        SqlConnection con = null;
+        SqlCommand cmd;
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select *" +
+                " from CoupleTraining as CT inner join CoupleTrainingSuggestions AS CTS on CT.SuggestionCode = CTS.SuggestionCode" +
+                " inner join Users as U on U.UserCode = case when CTS.SenderCode = " + UserCode + " then CTS.ReceiverCode when CTS.ReceiverCode = " + UserCode + " then CTS.SenderCode end" +
+                " where(CTS.SenderCode = " + UserCode + " or CTS.ReceiverCode = " + UserCode + ") and(datediff(minute, CT.TrainingTime, '" + TrainingTime + "') between - 60 and 60) and(CT.StatusCode = 1)";
+
+            cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            
+            if (dr.Read())
+            {
+                return true;
+            }
+            else
+            {
+                con.Close();
+                con = connect("BenefitConnectionStringName");
+                selectSTR = "select *" +
+                    " from HistoryGroupTraining as HGT" +
+                    " inner join GroupParticipants as GP on GP.GroupTrainingCode = HGT.GroupTrainingCode" +
+                    " inner join SportCategories SC on HGT.SportCategoryCode = SC.CategoryCode" +
+                    " where GP.UserCode = " + UserCode +
+                    " and GP.StatusCode = 1" +
+                    " and(HGT.StatusCode = 1)" +
+                    " and(datediff(minute, HGT.TrainingTime, '" + TrainingTime + "') BETWEEN - 60 and 60)";
+
+                cmd = new SqlCommand(selectSTR, con);
+                dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+                if (dr.Read())
+                    return true;
+                else return false;
+            }
+            
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+
+    }
+
+
 
     // called by a proccess to check if its 15m befor training 
     //returns list of users to sent them push 

@@ -298,6 +298,15 @@ namespace Benefit.Controllers
             return b.OpenChat(UserCode1, UserCode2);
         }
 
+        [HttpGet]
+        [Route("api/checkForCloseTrainings")]
+        public bool checkForCloseTrainings(int UserCode, string TrainingTime)
+        {
+            BenefitSystem b = new BenefitSystem();
+            return b.checkForCloseTrainings(UserCode, TrainingTime);
+        }
+        
+
     }
 
 

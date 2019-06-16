@@ -156,5 +156,13 @@ namespace Benefit.Models
             return dbs.OpenChat(UserCode1, UserCode2);
         }
 
+
+        public bool checkForCloseTrainings(int UserCode, string TrainingTime)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.checkForCloseTrainings(UserCode, TrainingTime);
+        }
+
+
     }
 }
