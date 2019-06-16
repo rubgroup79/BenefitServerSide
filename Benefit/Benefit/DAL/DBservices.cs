@@ -2339,7 +2339,7 @@ public class DBservices
         }
 
     }
-
+    //
     public void GoOffline(int UserCode, int IsTrainer)
     {
         SqlConnection con = null;
