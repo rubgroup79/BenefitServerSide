@@ -2352,16 +2352,16 @@ public class DBservices
             if (IsTrainer == 1)
             {
                 selectSTR = "delete" +
-                " from CurrentOnlineTrainee" +
-                " where CurrentOnlineTrainee.OnlineCode in" +
-                " (select OHT.OnlineCode" +
-                " from OnlineHistoryTrainee as OHT inner join CurrentOnlineTrainee as COT on OHT.OnlineCode = COT.OnlineCode" +
-                " where OHT.TraineeCode = " + UserCode + ")";
+              " from CurrentOnlineTrainer" +
+              " where CurrentOnlineTrainer.OnlineCode in" +
+              " (select OHT.OnlineCode" +
+              " from OnlineHistoryTrainer as OHT inner join CurrentOnlineTrainer as COT on OHT.OnlineCode = COT.OnlineCode" +
+              " where OHT.TrainerCode = " + UserCode + ")";
             }
 
             else
             {
-                selectSTR = "delete" +
+              selectSTR = "delete" +
                 " from CurrentOnlineTrainee" +
                 " where CurrentOnlineTrainee.OnlineCode in" +
                 " (select OHT.OnlineCode" +
