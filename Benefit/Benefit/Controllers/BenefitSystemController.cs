@@ -291,6 +291,14 @@ namespace Benefit.Controllers
         }
 
         [HttpPost]
+        [Route("api/UpdateTrainerDetails")]
+        public void UpdateTrainerDetails([FromBody]TrainerDetails td)
+        {
+            BenefitSystem b = new BenefitSystem();
+            b.UpdateTrainerDetails(td);
+        }
+
+        [HttpPost]
         [Route("api/OpenChat")]
         public int OpenChat(int UserCode1, int UserCode2)
         {

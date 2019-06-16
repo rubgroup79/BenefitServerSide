@@ -13,6 +13,17 @@ namespace Benefit.Models
           
         }
 
+        public void UpdateTrainingsStatus()
+        {
+
+            DBservices dbs = new DBservices();
+            dbs.UpdateTrainingsStatus();
+        }
+
+        //---------------------------------------------------------------------------------
+        // Login
+        //---------------------------------------------------------------------------------
+
         public bool CheckIfEmailExists(string UserEmail)
         {
             DBservices dbs = new DBservices();
@@ -24,6 +35,15 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             return dbs.CheckIfPasswordMatches(UserEmail, Password);
         }
+
+        public void UpdateToken(string Token, int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            dbs.UpdateToken(Token, UserCode);
+        }
+        //---------------------------------------------------------------------------------
+        // User Learning
+        //---------------------------------------------------------------------------------
 
         // this function returns all trainees that didnt participate in a training for over a week//
         public List<Trainee> GetLazyTrainees()
@@ -37,22 +57,17 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             return dbs.GetLazyTrainers();
         }
-
-
+        
         public List<PrefferedDay> GetPrefferedTrainingDay()
         {
             DBservices dbs = new DBservices();
             return dbs.GetPrefferedTrainingDay();
         }
-
-
-
-        public void UpdateToken(string Token, int UserCode)
-        {
-            DBservices dbs = new DBservices();
-            dbs.UpdateToken(Token, UserCode);
-        }
-
+        
+         //---------------------------------------------------------------------------------
+        // Profile
+        //---------------------------------------------------------------------------------
+        
         //public List<User> SearchPartners(CurrentOnlineTrainee o)
         //{
         //    DBservices dbs = new DBservices();
@@ -65,11 +80,40 @@ namespace Benefit.Models
             return dbs.ShowProfile(UserCode);
         }
 
+        public List<SportCategory> GetSportCategories()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetSportCategories();
+        }
+
+        public TraineeDetails GetTraineeProfileDetails(int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetTraineeProfileDetails(UserCode);
+        }
+
+        public void UpdateTraineeDetails(TraineeDetails td)
+        {
+            DBservices dbs = new DBservices();
+            dbs.UpdateTraineeDetails(td);
+        }
+
+        public void UpdateTrainerDetails(TrainerDetails td)
+        {
+            DBservices dbs = new DBservices();
+            dbs.UpdateTrainerDetails(td);
+        }
+
+        //---------------------------------------------------------------------------------
+        // Home - Online\Offline
+        //---------------------------------------------------------------------------------
+
         public void GoOffline(int UserCode, int IsTrainer)
         {
             DBservices dbs = new DBservices();
             dbs.GoOffline(UserCode, IsTrainer);
         }
+
         public OnlineHistoryTrainee CheckIfTraineeOnline(int UserCode)
         {
             DBservices dbs = new DBservices();
@@ -82,13 +126,10 @@ namespace Benefit.Models
             return dbs.CheckIfTrainerOnline(UserCode);
         }
 
-        public void UpdateTrainingsStatus()
-        {
-
-            DBservices dbs = new DBservices();
-            dbs.UpdateTrainingsStatus();
-        }
-
+        //---------------------------------------------------------------------------------
+        // Rates
+        //---------------------------------------------------------------------------------
+        
         public int InsertNewRating(Rating r)
         {
             DBservices dbs = new DBservices();
@@ -125,44 +166,21 @@ namespace Benefit.Models
             dbs.UpdateExistingAvarageRate(r);
         }
 
-        public List<SportCategory> GetSportCategories()
-        {
-            DBservices dbs = new DBservices();
-             return dbs.GetSportCategories();
-        }
-
         public List<AverageRateParameters> GetAvarageParametersRate(int UserCode)
         {
             DBservices dbs = new DBservices();
             return dbs.GetAvarageParametersRate(UserCode);
         }
 
-        public TraineeDetails GetTraineeProfileDetails(int UserCode)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.GetTraineeProfileDetails(UserCode);
-        }
-
-        public void UpdateTraineeDetails(TraineeDetails td)
-        {
-            DBservices dbs = new DBservices();
-            dbs.UpdateTraineeDetails(td);
-        }
-
-
-        public int OpenChat(int UserCode1, int UserCode2)
-        {
-            DBservices dbs = new DBservices();
-            return dbs.OpenChat(UserCode1, UserCode2);
-        }
-
-
+        //---------------------------------------------------------------------------------
+        // Trainings
+        //---------------------------------------------------------------------------------
+       
         public bool checkForCloseTrainings(int UserCode, string TrainingTime)
         {
             DBservices dbs = new DBservices();
             return dbs.checkForCloseTrainings(UserCode, TrainingTime);
         }
-
-
+        
     }
 }

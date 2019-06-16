@@ -32,6 +32,7 @@ namespace Benefit.Models
     }
 
         public CoupleTraining() { }
+
         public List<CoupleTraining> GetFutureCoupleTrainings(int UserCode)
         {
             DBservices dbs = new DBservices();
