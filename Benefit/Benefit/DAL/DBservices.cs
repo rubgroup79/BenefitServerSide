@@ -2259,6 +2259,52 @@ public class DBservices
         }
     }
 
+    public TrainerDetails GetTrainerProfileDetails(int UserCode)
+    {
+
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+
+            String selectSTR = "select U.FirstName , U.LastName, U.Email, datediff(year, U.DateOfBirth, getdate()) as Age, U.Picture, U.Rate, U.SearchRadius, T.PersonalTrainingPrice" +
+                " from Users as U inner join Trainers as T on U.UserCode = T.TrainerCode" +
+                " where U.UserCode =" + UserCode;
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+
+            TrainerDetails td = new TrainerDetails();
+
+            while (dr.Read())
+            {
+                td.FirstName = Convert.ToString(dr["FirstName"]);
+                td.LastName = Convert.ToString(dr["LastName"]);
+                td.Email = Convert.ToString(dr["Email"]);
+                td.Age = Convert.ToInt32(dr["Age"]);
+                td.Picture = Convert.ToString(dr["Picture"]);
+                td.Rate = Convert.ToSingle(dr["Rate"]);
+                td.SearchRadius = Convert.ToInt32(dr["SearchRadius"]);
+                td.PersonalTrainingPrice = Convert.ToInt32(dr["PersonalTrainingPrice"]);
+            }
+
+            td.SportCategories = GetUserSportCategories(UserCode);
+            return td;
+        }
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
     public void UpdateTraineeDetails(TraineeDetails td)
     {
 

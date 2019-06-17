@@ -92,6 +92,12 @@ namespace Benefit.Models
             return dbs.GetTraineeProfileDetails(UserCode);
         }
 
+        public TrainerDetails GetTrainerProfileDetails(int UserCode)
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetTrainerProfileDetails(UserCode);
+        }
+
         public void UpdateTraineeDetails(TraineeDetails td)
         {
             DBservices dbs = new DBservices();

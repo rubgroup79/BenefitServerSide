@@ -282,6 +282,15 @@ namespace Benefit.Controllers
             return b.GetTraineeProfileDetails(UserCode);
         }
 
+
+        [HttpGet]
+        [Route("api/GetTrainerProfileDetails")]
+        public TrainerDetails GetTrainerProfileDetails(int UserCode)
+        {
+            BenefitSystem b = new BenefitSystem();
+            return b.GetTrainerProfileDetails(UserCode);
+        }
+
         [HttpPost]
         [Route("api/UpdateTraineeDetails")]
         public void UpdateTraineeDetails([FromBody]TraineeDetails td)
