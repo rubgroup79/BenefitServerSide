@@ -73,7 +73,7 @@ namespace Benefit
 
             }
 
-            if (DateTime.Now.ToString("HH:mm tt") == "00" || DateTime.Now.ToString("HH:mm tt") == "12")
+          // if (DateTime.Now.ToString("HH") == "00" || DateTime.Now.ToString("HH") == "04")
             {
 
                 DBservices db = new DBservices();

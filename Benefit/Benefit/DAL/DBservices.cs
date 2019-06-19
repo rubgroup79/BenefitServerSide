@@ -331,6 +331,8 @@ public class DBservices
     {
         List<Result> Partners = null;
         List<Result> Trainers = null;
+        UpdateTrainingsStatus();
+        UpdateSuggestionsStatus();
         if (o.WithPartner == 1 && o.WithTrainer == 1)
         {
             Partners = SearchPartners(o);
@@ -662,7 +664,8 @@ public class DBservices
 
     public List<HistoryGroupTraining> SearchGroups(OnlineHistoryTrainee o)
     {
-
+        UpdateSuggestionsStatus();
+        UpdateTrainingsStatus();
         SqlConnection con = null;
         SqlCommand cmd;
 
@@ -1127,6 +1130,8 @@ public class DBservices
 
     public List<HistoryGroupTraining> GetFutureGroupTrainings(int UserCode)
     {
+        UpdateSuggestionsStatus();
+        UpdateTrainingsStatus();
         SqlConnection con = null;
         SqlCommand cmd;
         try
@@ -1182,6 +1187,7 @@ public class DBservices
 
     public List<SuggestionResult> GetSuggestions(int UserCode, bool IsApproved)
     {
+        UpdateTrainingsStatus();
         UpdateSuggestionsStatus();
         SqlConnection con = null;
         SqlCommand cmd;
@@ -3189,7 +3195,7 @@ public class DBservices
             String selectSTR =
                 " select HGT.GroupTrainingCode from HistoryGroupTraining HGT" +
                 " where (HGT.CurrentParticipants < HGT.MinParticipants) " +
-                " and(DATEDIFF(MINUTE, HGT.TrainingTime, getdate()) <= 15) and(HGT.StatusCode = 1) ";
+                " and(DATEDIFF(MINUTE, HGT.TrainingTime, getdate()) between -15 and -0) and(HGT.StatusCode = 1) ";
             // if it returns a value, cancel group 
             cmd = new SqlCommand(selectSTR, con);
 

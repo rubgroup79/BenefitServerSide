@@ -77,23 +77,23 @@
             // ADD ONLINE TRAINEE
             //--------------------------------------------------------------------
 
-            //onlinehistorytrainee = {
-            //    UserCode: 1,
-            //    Latitude: 32.362144,
-            //    Longitude: 34.859936,
-            //    StartTime: "2019-06-02 14:00:00.123",
-            //    EndTime: "2019-06-02 23:44:00.123",
-            //    WithTrainer: 1,
-            //    WithPartner: 1,
-            //    GroupWithTrainer: 1,
-            //    GroupWithPartners: 1
-            //}
+            onlinehistorytrainee = {
+                UserCode: 1,
+                Latitude: 32.362144,
+                Longitude: 34.859936,
+                StartTime: "2019-06-18 10:00:00.123",
+                EndTime: "2019-06-18 23:44:00.123",
+                WithTrainer: 1,
+                WithPartner: 1,
+                GroupWithTrainer: 1,
+                GroupWithPartners: 1
+            }
 
-            //obj = JSON.stringify(onlinehistorytrainee);
-            //console.log(obj);
+            obj = JSON.stringify(onlinehistorytrainee);
+            console.log(obj);
             // ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
             //ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
-            //ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
+            ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
 
             //delete from db
             // ajaxCall("GET", "../api/DeleteNotActive", obj, success1, error);
@@ -134,7 +134,7 @@
             //obj = JSON.stringify(HistoryGroupTraining);
             //console.log(obj);
             //ajaxCall("POST", "../api/InsertGroupTraining", obj, successInsertOnline, error);
-            ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successGetLazy, error);
             //ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successGetLazy, error);
 
             //details = {
@@ -209,7 +209,7 @@
             //ajaxCall("GET", "../api/GetSportCategories", "", successGetLazy, error);
             //ajaxCall("GET", "../api/GetAvarageParametersRate?UserCode=2", "", successGetLazy, error);
             //ajaxCall("GET", "../api/GetTraineeProfileDetails?UserCode=1", "", successGetLazy, error);
-            ajaxCall("GET", "../api/GetTrainerProfileDetails?UserCode=4", "", successGetLazy, error);
+            //ajaxCall("GET", "../api/GetTrainerProfileDetails?UserCode=4", "", successGetLazy, error);
 
             //TraineeDetails = {
             //    TraineeCode: 40,
