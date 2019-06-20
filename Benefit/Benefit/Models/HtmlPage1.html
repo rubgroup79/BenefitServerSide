@@ -55,45 +55,46 @@
             //--------------------------------------------------------------------
             // ADD TRAINER
             //--------------------------------------------------------------------
-            //Trainer = {
-            //    Email: "noam@gmail.com",
-            //    FirstName: "noam",
-            //    LastName: "sharon",
-            //    Password: "12345",
-            //    Gender: "Male",
-            //    DateOfBirth: "1992-10-16",
-            //    Picture: "11111",
-            //    SearchRadius: 8,
-            //    IsTrainer: 1,
-            //    SportCategories: [1, 2],
-            //    PersonalTrainingPrice: 200,
-            //    GroupTrainingPrice: 80
-            //}
-            //obj = JSON.stringify(Trainer);
+            Trainer = {
+                Email: "gh@gnk.com",
+                Password: "111111111",
+                FirstName: "b",
+                LastName: "h",
+                Gender: "Female",
+                DateOfBirth: "1995-05-19",
+                SportCategories:
+                    [{ CategoryCode: 3, Description: "Jogging", Selected: true },
+                    { CategoryCode: 6, Description: "Functional", Selected: true }],
+                IsTrainer: 1,
+                SearchRadius: 5,
+                Picture: "http://proj.ruppin.ac.il/bgroup79/test1/tar6/uploadFiles/Female.jpg",
+                PersonalTrainingPrice: 150
+            }
+            obj = JSON.stringify(Trainer);
             //console.log(obj);
-            //ajaxCall("POST", "../api/InsertTrainer", obj, success1, error);
+            ajaxCall("POST", "../api/InsertTrainer", obj, success1, error);
 
             //--------------------------------------------------------------------
             // ADD ONLINE TRAINEE
             //--------------------------------------------------------------------
 
-            onlinehistorytrainee = {
-                UserCode: 1,
-                Latitude: 32.362144,
-                Longitude: 34.859936,
-                StartTime: "2019-06-18 10:00:00.123",
-                EndTime: "2019-06-18 23:44:00.123",
-                WithTrainer: 1,
-                WithPartner: 1,
-                GroupWithTrainer: 1,
-                GroupWithPartners: 1
-            }
+            //onlinehistorytrainee = {
+            //    UserCode: 1,
+            //    Latitude: 32.362144,
+            //    Longitude: 34.859936,
+            //    StartTime: "2019-06-18 10:00:00.123",
+            //    EndTime: "2019-06-18 23:44:00.123",
+            //    WithTrainer: 1,
+            //    WithPartner: 1,
+            //    GroupWithTrainer: 1,
+            //    GroupWithPartners: 1
+            //}
 
-            obj = JSON.stringify(onlinehistorytrainee);
-            console.log(obj);
+            //obj = JSON.stringify(onlinehistorytrainee);
+            //console.log(obj);
             // ajaxCall("POST", "../api/insertonlinetrainee", obj, successInsertOnline, error);
             //ajaxCall("POST", "../api/SearchCoupleTraining", obj, successInsertOnline1, error);
-            ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
+            //ajaxCall("POST", "../api/SearchGroups", obj, successInsertOnline1, error);
 
             //delete from db
             // ajaxCall("GET", "../api/DeleteNotActive", obj, success1, error);
@@ -102,17 +103,17 @@
             // ADD ONLINE TRAINER
             //--------------------------------------------------------------------
 
-                //OnlineHistoryTrainer = {
-                //    UserCode: 4,
-                //    Latitude: "32.328673",
-                //    Longitude: "34.906768",
-                //    StartTime: "2019-03-16 09:00:29.123",
-                //    EndTime: "2019-03-16 09:30:29.123"
-                //}
+            //OnlineHistoryTrainer = {
+            //    UserCode: 4,
+            //    Latitude: "32.328673",
+            //    Longitude: "34.906768",
+            //    StartTime: "2019-03-16 09:00:29.123",
+            //    EndTime: "2019-03-16 09:30:29.123"
+            //}
 
-                //obj = JSON.stringify(OnlineHistoryTrainer);
-                //console.log(obj);
-                //ajaxCall("POST", "../api/InsertOnlineTrainer", obj, successInsertOnline, error);
+            //obj = JSON.stringify(OnlineHistoryTrainer);
+            //console.log(obj);
+            //ajaxCall("POST", "../api/InsertOnlineTrainer", obj, successInsertOnline, error);
 
 
             //--------------------------------------------------------------------
@@ -143,7 +144,7 @@
             //}
 
             //obj = JSON.stringify(details);
-           // ajaxCall("POST", "../api/JoinGroup?UserCode=1&GroupTrainingCode=54", "", success1, error);
+            // ajaxCall("POST", "../api/JoinGroup?UserCode=1&GroupTrainingCode=54", "", success1, error);
 
             //--------------------------------------------------------------------
             // check function GET LAZY TRAINEES
@@ -158,17 +159,17 @@
             //	ReciverCode: 29
             //}
             //obj = JSON.stringify(Suggestion);
-          //  ajaxCall("GET", "../api/SendSuggestion?SenderCode=1&ReceiverCode=2", "", successSendSuggestion, error);
+            //  ajaxCall("GET", "../api/SendSuggestion?SenderCode=1&ReceiverCode=2", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/ReplySuggestion?SuggestionCode=1&reply="+"true", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetPendingSuggestions?UserCode=28&Sender=true", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelSuggestion?SuggestionCode=29", "", successSendSuggestion, error);
-          //  ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successSendSuggestion, error);
+            //  ajaxCall("GET", "../api/GetSuggestions?UserCode=1&IsApproved=false", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureCoupleTrainings?UserCode=1", "", successSendSuggestion, error);
             //ajaxCall("POST", "../api/CancelCoupleTraining?CoupleTrainingCode=25&UserCode=1", "", successSendSuggestion, error);
-            //ajaxCall("GET", "../api/checkForCloseTrainings?UserCode=1&TrainingTime=2019-06-15 18:00:00", "", successSendSuggestion, error);
+            //ajaxCall("GET", "../api/checkForCloseTrainings?UserCode=4&TrainingTime=2019-06-19 18:00:00", "", successSendSuggestion, error);
             //ajaxCall("GET", "../api/CheckIfTrainerOnline?UserCode=4", "", successGetLazy, error);
             //ajaxCall("GET", "../api/CheckIfTraineeOnline?UserCode=1", "", successGetLazy, error);
-           // ajaxCall("POST", "../api/OpenChat?UserCode1=1&UserCode2=5", "", successGetLazy, error);
+            // ajaxCall("POST", "../api/OpenChat?UserCode1=1&UserCode2=5", "", successGetLazy, error);
             //ajaxCall("POST", "../api/GoOffline?UserCode=3&IsTrainer=0", "", success1, error);
             //ajaxCall("POST", "../api/CancelGroupParticipant?GroupTrainingCode=54&UserCode=1", "", successSendSuggestion, error);
             //     var pnd = {
@@ -233,7 +234,7 @@
 
             //}
             //obj = JSON.stringify(TraineeDetails);
-            
+
             //ajaxCall("POST", "../api/UpdateTraineeDetails", obj, successGetLazy, error);
 
             // ParametersRate = {

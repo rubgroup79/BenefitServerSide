@@ -322,7 +322,15 @@ namespace Benefit.Controllers
             BenefitSystem b = new BenefitSystem();
             return b.checkForCloseTrainings(UserCode, TrainingTime);
         }
-        
+
+        [HttpGet]
+        [Route("api/GetParametersDescription")]
+        public IEnumerable<RateParameter> GetRateParameters()
+        {
+            BenefitSystem b = new BenefitSystem();
+            return b.GetRateParameters();
+        }
+
 
     }
 

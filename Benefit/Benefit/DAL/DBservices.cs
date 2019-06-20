@@ -1164,6 +1164,7 @@ public class DBservices
                 hgt.SportCategory = Convert.ToString(dr["SportCategory"]);
                 hgt.Price = Convert.ToInt32(dr["Price"]);
                 hgt.CreatorCode = Convert.ToInt32(dr["CreatorCode"]);
+                hgt.StatusCode= Convert.ToInt32(dr["StatusCode"]);
                 hgtl.Add(hgt);
             }
 
@@ -2459,11 +2460,47 @@ public class DBservices
         }
     }
 
+    public List<RateParameter> GetRateParameters()
+    {
+        SqlConnection con = null;
+
+        try
+        {
+            con = connect("BenefitConnectionStringName");
+            String selectSTR = "select * from RateParameters";
+            SqlCommand cmd = new SqlCommand(selectSTR, con);
+            SqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection);
+            List<RateParameter> rpl = new List<RateParameter>();
+
+            while (dr.Read())
+            {
+                RateParameter rp = new RateParameter();
+                rp.ParameterCode = Convert.ToInt32(dr["ParameterCode"]);
+                rp.Description = Convert.ToString(dr["Description"]);
+
+                rpl.Add(rp);
+            }
+            return rpl;
+        }
+
+        catch (Exception ex)
+        {
+            throw (ex);
+        }
+        finally
+        {
+            if (con != null)
+            {
+                con.Close();
+            }
+        }
+    }
+
 
     //--------------------------------------------------------------------------------------------------
     // Rates
     //--------------------------------------------------------------------------------------------------
-    
+
     public List<AverageRateParameters> GetAvarageParametersRate(int UserCode)
     {
         SqlConnection con = null;

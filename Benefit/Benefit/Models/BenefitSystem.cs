@@ -197,5 +197,12 @@ namespace Benefit.Models
             DBservices dbs = new DBservices();
             return dbs.OpenChat(UserCode1, UserCode2);
         }
+
+        public List<RateParameter> GetRateParameters()
+        {
+            DBservices dbs = new DBservices();
+            return dbs.GetRateParameters();
+        }
+
     }
 }
