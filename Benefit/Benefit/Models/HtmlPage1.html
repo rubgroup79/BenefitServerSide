@@ -55,24 +55,24 @@
             //--------------------------------------------------------------------
             // ADD TRAINER
             //--------------------------------------------------------------------
-            Trainer = {
-                Email: "gh@gnk.com",
-                Password: "111111111",
-                FirstName: "b",
-                LastName: "h",
-                Gender: "Female",
-                DateOfBirth: "1995-05-19",
-                SportCategories:
-                    [{ CategoryCode: 3, Description: "Jogging", Selected: true },
-                    { CategoryCode: 6, Description: "Functional", Selected: true }],
-                IsTrainer: 1,
-                SearchRadius: 5,
-                Picture: "http://proj.ruppin.ac.il/bgroup79/test1/tar6/uploadFiles/Female.jpg",
-                PersonalTrainingPrice: 150
-            }
-            obj = JSON.stringify(Trainer);
+            //Trainer = {
+            //    Email: "gh@gnk.com",
+            //    Password: "111111111",
+            //    FirstName: "b",
+            //    LastName: "h",
+            //    Gender: "Female",
+            //    DateOfBirth: "1995-05-19",
+            //    SportCategories:
+            //        [{ CategoryCode: 3, Description: "Jogging", Selected: true },
+            //        { CategoryCode: 6, Description: "Functional", Selected: true }],
+            //    IsTrainer: 1,
+            //    SearchRadius: 5,
+            //    Picture: "http://proj.ruppin.ac.il/bgroup79/test1/tar6/uploadFiles/Female.jpg",
+            //    PersonalTrainingPrice: 150
+            //}
+            //obj = JSON.stringify(Trainer);
             //console.log(obj);
-            ajaxCall("POST", "../api/InsertTrainer", obj, success1, error);
+            //ajaxCall("POST", "../api/InsertTrainer", obj, success1, error);
 
             //--------------------------------------------------------------------
             // ADD ONLINE TRAINEE
@@ -180,7 +180,7 @@
             //    }
             //ajaxCall("POST", "../sendpushnotification", JSON.stringify(pnd), successSendSuggestion, error);
             //ajaxCall("GET", "../api/GetFutureGroupTrainings?UserCode=1", "", successSendSuggestion, error);
-            //  ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
+              ajaxCall("GET", "../api/GetAllChats?UserCode=1", "", successGetLazy, error);
 
             //ajaxCall("GET", "../api/GetSuggestionCode?UserCode1=1&UserCode2=2", "", successGetLazy, error);
 
